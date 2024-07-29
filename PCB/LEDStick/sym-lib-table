@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Danger_Doughnut_Lib")(type "KiCad")(uri "/home/gavin4d/projects/DangerDoughnut/PCB/DangerDoughnut/Danger_Doughnut_Lib.kicad_sym")(options "")(descr ""))
+)

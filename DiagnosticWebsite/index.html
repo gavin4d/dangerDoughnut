@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danger Donut Diagnostics</title>
+  </head>
+  <body>
+    <div class="bar">
+      <h1>Danger Donut Diagnostics</h1>
+      <h2 id="monitor">Monitor</h2>
+      <input type="file" id="data-import" value="Import"></input>
+      <button id="data-export">Export</button>
+      <h2>Config</h2>
+      <div class="var">
+        Displayed Variable
+        <div class="spacer"></div>
+        <select class="var-select">
+        </select>
+      </div>
+      <button id="config-upload">Upload to Bot</button>
+      <button id="config-import">Import</button>
+      <button id="config-export">Export</button>
+    </div>
+    <div class="graph">
+      <svg id="svg" viewBox="0 0 23 15" xmlns="http://www.w3.org/2000/svg">
+        <path class="gridline" d="M 2,1 H 22 M 2,3 H 22 M 2,5 H 22 M 2,7 H 22 M 2,9 H 22 M 2,11 H 22 M 2,13 H 22"/>
+        <text class="left" x="1.8" y="13">0</text>
+        <text class="left" x="1.8" y="11">10</text>
+        <text class="left" x="1.8" y="9">20</text>
+        <text class="left" x="1.8" y="7">30</text>
+        <text class="left" x="1.8" y="5">40</text>
+        <text class="left" x="1.8" y="3">50</text>
+        <text class="left" x="1.8" y="1">60</text>
+        <text class="bottom" x="2" y="13">0</text>
+        <text class="bottom" x="4" y="13">1000</text>
+        <text class="bottom" x="6" y="13">2000</text>
+        <text class="bottom" x="8" y="13">3000</text>
+        <text class="bottom" x="10" y="13">4000</text>
+        <text class="bottom" x="12" y="13">5000</text>
+        <text class="bottom" x="14" y="13">6000</text>
+        <text class="bottom" x="16" y="13">7000</text>
+        <text class="bottom" x="18" y="13">8000</text>
+        <text class="bottom" x="20" y="13">9000</text>
+        <text class="bottom" x="22" y="13">10000</text>
+      </svg>
+      <div class="settings" hidden>
+        <h2>Y-axis</h2>
+        <div id="range" class="var">
+          Range
+          <input type="number" value="0">
+          to
+          <input type="number" value="50">
+        </div>
+        <h2>X-axis</h2>
+        <div class="var">
+          Variable
+          <div class="spacer"></div>
+          <select class="var-select" id="xVar">
+          </select>
+        </div>
+        <div id="domain-size" class="var" hidden>
+          Domain size
+          <input type="number" value="20">
+        </div>
+        <div id="domain" class="var">
+          Domain
+          <input type="number" value="0">
+          to
+          <input type="number" value="10000">
+        </div>
+        <div class="var">
+          Manual Range
+          <input id="manual-range" type="checkbox" checked>
+          <div class="spacer"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const traceColors = ['#ff6363', '#4fb659', '#2d8dad', '#7f45a1']
+    var variableList = ["Time", "Packet Number", "Battery Voltage", "Angle Measurment", "Velocity Measurment", "Angle", "Angular Velocity", "Angular Acceleration", "Angle Variance", "Angular Velocity Variance", "Angular Acceleration Variance", "X Accel", "Y Accel", "Z Accel", "Rotation Period", "RPM"];
+    const configList = ["Drive Sensitivity", "Turn Sensitivity", "Melty Sensitivity", "Melty Rotate Sensitivity", "Stick Dead Zone", "Max Acceleration", "Jerk Compensation", "Offset Clockwise", "Offset Counter Clockwise"];
+    var monitorData = [];
+    var graphingIndexes = [];
+
+    window.onload = function() {
+      setupCallbacks();
+    }
+
+    function makeGraphGrid(x1, x2, y1, y2) {
+      const svg = document.getElementById('svg');
+      const yStep = (y2-y1)/6;
+      const xStep = (x2-x1)/10;
+      var x = parseFloat(x1);
+      var y = parseFloat(y1);
+      svg.querySelectorAll('.bottom').forEach(e => {
+        e.innerHTML = Number(x.toFixed(1));
+        x+=xStep;
+      });
+      svg.querySelectorAll('.left').forEach(e => {
+        e.innerHTML = Number(y.toFixed(1));
+        y+=yStep;
+      });
+    }
+
+    function addTrace(e) {
+      const targetVar = e.target;
+      const searchIndex = parseInt(targetVar.getAttribute('index'));
+      const tempIndex = graphingIndexes.indexOf(searchIndex);
+      if (tempIndex > -1) {
+        graphingIndexes.splice(tempIndex, 1);
+        targetVar.innerText = '+';
+      } else {
+        graphingIndexes.push(searchIndex)
+        targetVar.innerText = '-';
+      }
+      updateGraph();
+    }
+    //e.options[e.selectedIndex].text;
+    function updateGraph() {
+      const svg = document.getElementById('svg');
+      svg.querySelectorAll('.trace').forEach(e => e.remove());
+      const range = document.getElementById('range');
+      const domain = document.getElementById('domain');
+      const domainSize = document.getElementById('domain-size');
+      const xData = monitorData[document.getElementById('xVar').selectedIndex];
+
+      var y1 = range.childNodes[1].value;
+      var y2 = range.childNodes[3].value;
+      var x1;
+      var x2;
+      if (domain.hidden) {
+        x2 = xData.at(-1);
+        x1 = x2 - domainSize.childNodes[1].value;
+      } else {
+        x1 = domain.childNodes[1].value;
+        x2 = Math.min(domain.childNodes[3].value, xData.at(-1));
+      }
+      makeGraphGrid(x1,x2,y1,y2);
+
+      var startIndex = 0;
+      for (startIndex = 0; xData[startIndex+1] < x1; startIndex++);
+      var endIndex = 0;
+      for (endIndex = 0; xData[endIndex] <= x2; endIndex++);
+
+      for (let i=0; i<graphingIndexes.length; i++) {
+        varIndex = graphingIndexes[i];
+        var newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        newPath.classList.add('trace');
+        var newPathData = "M2," + (13-12*(monitorData[varIndex][startIndex]-y1)/(y2-y1)) + " L";
+        for (let j=startIndex+1; j <= endIndex; j++) {
+          newPathData += (2+20*j/(endIndex-startIndex)) + "," + (13-12*(monitorData[varIndex][j]-y1)/(y2-y1)) + " ";
+        }
+        newPath.setAttributeNS(null, 'd', newPathData);
+        newPath.style.stroke = traceColors[i % traceColors.length];
+        svg.appendChild(newPath);
+      }
+    }
+
+    function importMonitor(e) {
+      var file = e.target.files[0];
+      if (!file) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var contents = e.target.result;
+        var allTextLines = contents.split(/\r\n|\n/);
+        variableList = allTextLines[0].split(',');
+
+        for (var j=0; j<variableList.length; j++) {
+          var varData = [];
+          for (var i=1; i<allTextLines.length; i++) {
+            var data = allTextLines[i].split(',');
+            varData.push(parseFloat(data[j]));
+          }
+          monitorData.push(varData);
+        }
+        console.log(monitorData);
+        fillOptions();
+      };
+      reader.readAsText(file);
+    }
+
+    function fillOptions() {
+      // select elements
+      const selectors = document.getElementsByClassName('var-select');
+      for (let selector of selectors) {
+        for (let variable of variableList) {
+          var option = document.createElement('option');
+          option.innerText = variable;
+          selector.appendChild(option);
+        }
+      }
+      // monitor list
+      const importData = document.getElementById('data-import');
+      for (let i=0; i<variableList.length; i++) {
+        let varItem = document.createElement('div')
+        varItem.classList.add('var');
+        varItem.innerHTML = variableList[i] + '<div class="spacer"></div><input id="var-' + i + '" type="number"><button>+</button>';
+        varItem.childNodes[2].setAttribute('value', monitorData[i][0]);
+        varItem.childNodes[3].setAttribute('index', i);
+        varItem.childNodes[3].addEventListener('click', addTrace, false);
+        importData.before(varItem);
+      }
+      // config list
+      const uploadConfig = document.getElementById('config-upload');
+      for (let variable of configList) {
+        let varItem = document.createElement('div')
+        varItem.classList.add('var');
+        varItem.innerHTML = variable + '<div class="spacer"></div><input type="number">';
+        uploadConfig.before(varItem);
+      }
+      updateGraph();
+    }
+
+    function setupCallbacks() {
+      // graph update
+      document.querySelectorAll('input').forEach(e => e.addEventListener('change', updateGraph, false));
+      // monitor
+      const importData = document.getElementById('data-import');
+      importData.addEventListener('change', importMonitor, false);
+      // graph settings
+      const settingsContainer = document.querySelector('.settings');
+      const graph = document.getElementById('svg');
+      graph.onclick = () => {
+        settingsContainer.hidden = !settingsContainer.hidden;
+      };
+      // X axis
+      const manualRange = document.getElementById('manual-range');
+      manualRange.onchange = () => {
+        document.getElementById('domain').hidden = !manualRange.checked;
+        document.getElementById('domain-size').hidden = manualRange.checked;
+      };
+    }
+  </script>
+  <style>
+    :root {
+      --accent: #478492;
+    }
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    @media only screen and (max-width: 900px) {
+      body {
+        flex-direction: column-reverse;
+        overflow: auto;
+        height: fit-content;
+        align-items: center;
+      }
+      h1 {
+        display: none;
+      }
+    }
+    h1 {
+      color:var(--accent);
+      font-size: 3em;
+    }
+    .bar {
+      width: 400px;
+      padding: 24px;
+      overflow-y: auto;
+      border-right: 1px solid #ddd;
+    }
+    .var {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .var[hidden] {
+      display: none;
+    }
+    .spacer {
+      flex-grow: 1;
+    }
+    .var button {
+      font-family: "Courier New"
+    }
+    .var input[type="number"] {
+      width: 120px;
+      min-width: 50px;
+      flex-shrink: 5;
+    }
+    .graph {
+      flex-grow: 1;
+      position: relative;
+    }
+    .graph svg {
+      width: 100%;
+      height: auto;
+    }
+    svg text {
+      fill:#000000;
+      stroke-width:0;
+      font-size: 0.4px;
+    }
+    svg text.left {
+      text-anchor: end;
+      dominant-baseline: middle;
+    }
+    svg text.bottom {
+      text-anchor: middle;
+      dominant-baseline: hanging;
+      baseline-shift: sub;
+    }
+    svg path.gridline {
+      fill:none;
+      stroke:#00000055;
+      stroke-width:0.06px;
+      stroke-linecap:round;
+    }
+    svg path.trace {
+      fill:none;
+      stroke-width:0.125px;
+      stroke-linecap:round;
+      stroke-linejoin: round;
+    }
+    .graph .settings {
+      background-color: white;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width:400px;
+      height:100%;
+      padding: 24px;
+      border-left: 1px solid #ddd;
+    }
+  </style>
+</html>
