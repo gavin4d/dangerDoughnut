@@ -1,0 +1,15 @@
+{
+    "layout": {
+        "rows": "9",
+        "cols": "8"
+    },
+    "tabs": {
+        "type": "none"
+    },
+    "cuts": {
+        "type": "vcuts"
+    },
+    "framing": {
+        "type": "railslr"
+    }
+}
