@@ -8645,12 +8645,6 @@
 		(uuid "5af67bb2-e415-457b-be2a-58729c6d5385")
 	)
 	(junction
-		(at 252.73 236.22)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "60bb781e-48dc-440d-b18f-c25557a1f3e5")
-	)
-	(junction
 		(at 121.92 115.57)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8661,6 +8655,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6337dcb7-a038-46c3-953f-8b6ec36b213f")
+	)
+	(junction
+		(at 252.73 236.22)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "64eb9c62-4f6f-4898-b17d-b4946074931f")
 	)
 	(junction
 		(at 285.75 137.16)
@@ -9022,16 +9022,6 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 236.22) (xy 245.11 236.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "180db9f7-effd-47ca-9d4b-7c1ece793654")
-	)
-	(wire
-		(pts
 			(xy 261.62 223.52) (xy 251.46 223.52)
 		)
 		(stroke
@@ -9269,16 +9259,6 @@
 			(type default)
 		)
 		(uuid "4b544857-f54a-4693-92b3-90d474f2ad3e")
-	)
-	(wire
-		(pts
-			(xy 337.82 110.49) (xy 337.82 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b548470-cb03-471f-834a-5fb3fe8f22f8")
 	)
 	(wire
 		(pts
@@ -9529,16 +9509,6 @@
 			(type default)
 		)
 		(uuid "801205db-3270-4894-a764-60844c97e01c")
-	)
-	(wire
-		(pts
-			(xy 243.84 234.95) (xy 243.84 236.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "80588acd-e6ac-44d2-91bb-16dd742eaba4")
 	)
 	(wire
 		(pts
@@ -10180,7 +10150,7 @@
 		)
 		(uuid "fab6607c-d921-4701-ab3d-5d8e729f7184")
 	)
-	(text "TODO:\nimport HD107s LEDs\nwire LEDs\nwire ESP32\nuart resistor?\nfind pinouts\nsensor interupts?\nadd pin header\nadd disconnects\nadd test points\nboot pins accessable\nOrganize"
+	(text "TODO:\nwire ESP32\nuart resistor?\nfind pinouts\nsensor interupts?\nadd pin header\nadd disconnects\nadd test points\nadd ground option elrs boot pin\nboot pins accessable\nOrganize"
 		(exclude_from_sim no)
 		(at 423.418 64.262 0)
 		(effects
@@ -10362,6 +10332,28 @@
 			)
 		)
 	)
+	(global_label "LED_BOTTOM"
+		(shape input)
+		(at 260.35 59.69 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "03746d14-14f6-4d43-9db2-41042f562caf")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 245.6325 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SX_SCK"
 		(shape input)
 		(at 317.5 228.6 0)
@@ -10397,6 +10389,28 @@
 		(uuid "06c01cac-eb39-4ba4-a11c-e8b8d5d4bf5e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 297.2187 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "ACCEL1_INT"
+		(shape input)
+		(at 259.08 63.5 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0a044996-371e-4a83-9f39-dc5837594b32")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 245.2091 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10604,6 +10618,28 @@
 			)
 		)
 	)
+	(global_label "MAG_INT"
+		(shape input)
+		(at 259.08 66.04 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2ba1ce2c-289e-456c-bce6-c583ed097a31")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 248.4143 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "ESC_L"
 		(shape input)
 		(at 237.49 120.65 0)
@@ -10628,7 +10664,7 @@
 	)
 	(global_label "LED_SCK"
 		(shape input)
-		(at 165.1 166.37 0)
+		(at 168.91 161.29 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10638,7 +10674,7 @@
 		)
 		(uuid "335550db-b7c5-40f4-83f9-557b0e474320")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 176.2494 166.37 0)
+			(at 180.0594 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11134,7 +11170,7 @@
 	)
 	(global_label "LED_MOSI"
 		(shape input)
-		(at 165.1 168.91 0)
+		(at 168.91 163.83 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11144,7 +11180,7 @@
 		)
 		(uuid "86cefdf6-65f2-432c-8f58-3706c6dc932d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 177.0961 168.91 0)
+			(at 180.9061 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11330,6 +11366,28 @@
 			)
 		)
 	)
+	(global_label "ACCEL2_INT"
+		(shape input)
+		(at 259.08 68.58 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ac626876-1bf7-4599-beda-c96c44a01647")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 245.2091 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "MOSI_2"
 		(shape input)
 		(at 55.88 81.28 180)
@@ -11348,6 +11406,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "ACCEL1_INT"
+		(shape input)
+		(at 121.92 81.28 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "adf6c563-70b8-4725-bdae-f4993e6a17c3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 135.7909 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -11528,6 +11608,28 @@
 			)
 		)
 	)
+	(global_label "MAG_INT"
+		(shape input)
+		(at 123.19 35.56 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ca283f0d-4715-4323-ba5b-2403f0268212")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 133.8557 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "ESC_R"
 		(shape input)
 		(at 237.49 107.95 0)
@@ -11590,6 +11692,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "ACCEL2_INT"
+		(shape input)
+		(at 121.92 118.11 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ceef1493-f6d5-496e-beea-7b2c8ea54e94")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 135.7909 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -11722,6 +11846,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "LED_BOTTOM"
+		(shape input)
+		(at 190.5 168.91 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ea83057a-7441-4158-bdac-cef250be9409")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 190.5 183.6275 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)
@@ -11907,7 +12053,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 87.3252 226.06 0)
 			(effects
 				(font
@@ -11974,7 +12120,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 233.68 122.428 90)
 			(effects
 				(font
@@ -12044,7 +12190,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 101.092 267.97 90)
 			(effects
 				(font
@@ -12113,7 +12259,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 34.29 243.84 0)
 			(effects
 				(font
@@ -12182,7 +12328,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 140.6652 118.11 0)
 			(effects
 				(font
@@ -12251,7 +12397,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 253.6952 243.84 0)
 			(effects
 				(font
@@ -12878,7 +13024,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 282.9052 137.16 0)
 			(effects
 				(font
@@ -12915,6 +13061,76 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "C23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 190.5 165.1 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "15f02d8f-39f8-4293-bcd1-8a4d94bf3ec2")
+		(property "Reference" "D6"
+			(at 194.31 165.4174 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "Green LED"
+			(at 194.31 167.9574 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+			(at 190.5 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 190.5 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 190.5 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "16ce2c15-0a0c-4f74-98b1-5c77d764cb1e")
+		)
+		(pin "1"
+			(uuid "5a031f37-3278-488b-a91b-d88f25edb0c9")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -13071,7 +13287,7 @@
 				)
 			)
 		)
-		(property "Value" "2.2K"
+		(property "Value" "3.3k"
 			(at 80.772 259.588 0)
 			(effects
 				(font
@@ -13079,7 +13295,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 79.248 260.35 90)
 			(effects
 				(font
@@ -13116,6 +13332,73 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 165.1 161.29 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "197cbaf9-544e-4328-91b7-c0ee75c8f81b")
+		(property "Reference" "R22"
+			(at 165.1 161.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100"
+			(at 165.1 163.576 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 165.1 163.068 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 165.1 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 165.1 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6fc8ab41-c386-4a59-8d69-8379372bedf5")
+		)
+		(pin "2"
+			(uuid "fc1a6bef-662b-4b1c-b9fd-cfa4c39bcdce")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "R22")
 					(unit 1)
 				)
 			)
@@ -13415,7 +13698,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 375.6152 26.67 0)
 			(effects
 				(font
@@ -13547,7 +13830,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 281.94 170.942 90)
 			(effects
 				(font
@@ -13616,7 +13899,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 61.9252 259.08 0)
 			(effects
 				(font
@@ -14024,7 +14307,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 247.65 214.3252 0)
 			(effects
 				(font
@@ -14436,6 +14719,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3.3V")
+		(at 252.73 236.22 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2b2c5e05-9757-4430-9c6c-57f0b24bd8fa")
+		(property "Reference" "#PWR067"
+			(at 252.73 240.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 252.73 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 252.73 236.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 252.73 236.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 252.73 236.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b835d8d4-334b-439c-9f82-b27301713371")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR067")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Danger_Doughnut_Lib:SR4W035")
 		(at 358.14 107.95 0)
 		(unit 1)
@@ -14584,6 +14933,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 57.15 220.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2c93514e-aee2-425e-a17f-f11e79a8265d")
+		(property "Reference" "C29"
+			(at 60.96 218.8209 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100uF"
+			(at 60.96 221.3609 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+			(at 58.1152 224.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 57.15 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0e7d54a5-900d-4461-a7f0-c5837d2646a9")
+		)
+		(pin "1"
+			(uuid "57e68c5d-5a24-41e0-8a00-fea20c7ad476")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "C29")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 252.73 243.84 0)
 		(unit 1)
@@ -14643,6 +15062,73 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR068")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 190.5 157.48 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2f46ce8d-2a0d-421f-8a3b-5348b3c7c97f")
+		(property "Reference" "R20"
+			(at 193.802 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "30"
+			(at 193.802 156.718 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 192.278 157.48 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 190.5 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 190.5 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2b7c271d-87ee-4fe4-9c7f-28be9f30cfe4")
+		)
+		(pin "2"
+			(uuid "188a6cfb-b80e-4c23-bfb8-6e454dfef037")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -14808,7 +15294,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 367.9952 26.67 0)
 			(effects
 				(font
@@ -15141,7 +15627,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 205.74 52.578 90)
 			(effects
 				(font
@@ -15695,7 +16181,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 38.1 253.238 90)
 			(effects
 				(font
@@ -15762,7 +16248,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 281.94 176.022 90)
 			(effects
 				(font
@@ -15974,7 +16460,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 32.0548 35.56 0)
 			(effects
 				(font
@@ -16210,73 +16696,6 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR017")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 161.29 161.29 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "56995cf5-6055-46c0-bd64-0e56d41028ba")
-		(property "Reference" "#PWR055"
-			(at 167.64 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 165.1 161.2899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 161.29 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 161.29 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 161.29 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0210699f-4eb0-4789-9cb5-13484cae1006")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -16642,7 +17061,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 90.932 222.25 90)
 			(effects
 				(font
@@ -16751,6 +17170,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+BATT")
+		(at 57.15 217.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6062029e-d827-47dc-9101-79fbd5326b9f")
+		(property "Reference" "#PWR099"
+			(at 57.15 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+BATT"
+			(at 57.15 212.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 57.15 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+BATT\""
+			(at 57.15 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3555889d-c6d3-4bdc-a35a-bcb249eaa3d8")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR099")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 107.95 245.11 270)
 		(unit 1)
@@ -16811,72 +17296,6 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR014")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 347.98 115.57 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "64d61dc4-913a-4db2-b682-1c1f8e242ac8")
-		(property "Reference" "#PWR085"
-			(at 347.98 121.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 347.98 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 347.98 115.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 347.98 115.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 347.98 115.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "78407e96-4811-43d2-bf6f-3e8a4f755d5c")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "#PWR085")
 					(unit 1)
 				)
 			)
@@ -16954,72 +17373,6 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "U7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 243.84 234.95 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "67dcba37-1ca4-4e3d-b14a-16571b2e2f96")
-		(property "Reference" "#PWR067"
-			(at 243.84 238.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 243.84 229.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 243.84 234.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 234.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 243.84 234.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8bc8b31b-1cc9-4e5f-bdd6-c9aa33011539")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "#PWR067")
 					(unit 1)
 				)
 			)
@@ -17119,7 +17472,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 334.3148 236.22 0)
 			(effects
 				(font
@@ -17188,7 +17541,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 94.2848 261.62 0)
 			(effects
 				(font
@@ -17323,7 +17676,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 354.0252 26.67 0)
 			(effects
 				(font
@@ -17392,7 +17745,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 279.0952 190.5 0)
 			(effects
 				(font
@@ -17429,6 +17782,72 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "C26")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 190.5 153.67 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "71cfa2ca-0e65-4134-acee-56119d82c3ed")
+		(property "Reference" "#PWR085"
+			(at 190.5 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 190.5 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 190.5 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c9a0367a-b1e8-477d-877c-76e346a79458")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR085")
 					(unit 1)
 				)
 			)
@@ -17566,73 +17985,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 161.29 163.83 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "75152640-e0f6-4b93-92bf-e2657ced537e")
-		(property "Reference" "#PWR054"
-			(at 157.48 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 165.1 163.8299 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 161.29 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 161.29 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 161.29 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "22626ba9-0c09-4913-9e95-9e14278f9dc4")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "#PWR054")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 121.92 120.65 90)
 		(unit 1)
@@ -17726,7 +18078,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 261.3152 246.38 0)
 			(effects
 				(font
@@ -17795,7 +18147,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 293.0652 25.4 0)
 			(effects
 				(font
@@ -17862,7 +18214,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 233.68 109.728 90)
 			(effects
 				(font
@@ -18142,7 +18494,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
 			(at 171.1452 261.62 0)
 			(effects
 				(font
@@ -18453,73 +18805,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 248.92 236.22 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "84d372dc-f90b-4c43-811a-43231ff3bdad")
-		(property "Reference" "R11"
-			(at 248.92 236.22 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0"
-			(at 248.92 233.934 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
-			(at 248.92 237.998 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 248.92 236.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 248.92 236.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "89896ad8-a3d9-4c6c-9b90-d58aacee99d9")
-		)
-		(pin "2"
-			(uuid "785e9052-a4d1-4d47-a5f9-2aaced44bb7c")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 280.67 96.52 90)
 		(unit 1)
@@ -18676,7 +18961,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Diode_SMD:D_0805_2012Metric"
 			(at 205.74 45.72 0)
 			(effects
 				(font
@@ -18884,7 +19169,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 301.9552 25.4 0)
 			(effects
 				(font
@@ -18953,7 +19238,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 140.6652 80.01 0)
 			(effects
 				(font
@@ -19294,7 +19579,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 341.63 91.948 90)
 			(effects
 				(font
@@ -19331,6 +19616,73 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "R19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 165.1 163.83 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "99abc021-92f3-46d5-865d-1550b796b5d2")
+		(property "Reference" "R21"
+			(at 165.1 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100"
+			(at 165.1 166.116 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 165.1 165.608 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 165.1 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 165.1 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1b839047-56ac-4a96-ab5c-450a5bb2036f")
+		)
+		(pin "2"
+			(uuid "06cc49d9-5ba7-4f90-9fa8-6224b7700f78")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -19758,7 +20110,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 281.94 163.322 90)
 			(effects
 				(font
@@ -20010,7 +20362,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 90.932 214.63 90)
 			(effects
 				(font
@@ -20147,7 +20499,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 247.65 207.9752 0)
 			(effects
 				(font
@@ -20996,7 +21348,7 @@
 				)
 			)
 		)
-		(property "Value" "2.2K"
+		(property "Value" "3.3k"
 			(at 295.656 154.432 90)
 			(effects
 				(font
@@ -21004,7 +21356,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 295.91 154.178 90)
 			(effects
 				(font
@@ -21073,7 +21425,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 159.258 255.27 90)
 			(effects
 				(font
@@ -21447,6 +21799,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 57.15 224.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "bcdd1cc6-5ca7-479c-a24c-89b12d6bdea3")
+		(property "Reference" "#PWR0100"
+			(at 57.15 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 57.15 229.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 57.15 224.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 224.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 57.15 224.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2145ad85-3ddf-4d83-982d-30d041cee804")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR0100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 281.94 182.88 270)
 		(unit 1)
@@ -21471,7 +21889,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 281.94 181.102 90)
 			(effects
 				(font
@@ -21538,7 +21956,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 205.74 55.118 90)
 			(effects
 				(font
@@ -22073,7 +22491,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 101.9048 256.54 0)
 			(effects
 				(font
@@ -22140,7 +22558,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 372.11 141.478 90)
 			(effects
 				(font
@@ -22782,6 +23200,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 161.29 168.91 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e32fa002-a553-4617-aa4c-3859172a722f")
+		(property "Reference" "#PWR055"
+			(at 161.29 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 161.29 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 161.29 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7d8f4d0e-148c-422f-b713-f3875e94d582")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR055")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 307.34 160.02 90)
 		(unit 1)
@@ -22875,7 +23359,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 72.0852 256.54 0)
 			(effects
 				(font
@@ -23256,7 +23740,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 155.702 262.89 90)
 			(effects
 				(font
@@ -23425,6 +23909,73 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR079")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 161.29 166.37 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ee7b8b90-4548-4ffd-893c-0617a55cf1e7")
+		(property "Reference" "#PWR054"
+			(at 157.48 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 165.1 166.3699 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 161.29 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 161.29 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 161.29 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "25c821ac-e0df-4912-a2eb-101f13dae3b6")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -24172,201 +24723,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Danger_Doughnut_Lib:2450FM07D0034T")
-		(at 347.98 110.49 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f6a1ee80-7d9e-4ff1-be4d-c4393baa7bbb")
-		(property "Reference" "FL2"
-			(at 347.98 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2450FM07D0034T"
-			(at 347.98 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Danger_Doughnut_Lib:FIL_2450FM07D0034T"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "DigiKey_Part_Number" ""
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MF" "Johanson Technology Inc."
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MAXIMUM_PACKAGE_HEIGHT" "0.4 mm"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Package" "0402 Johanson Technology Inc."
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/2450FM07D0034T/Johanson+Technology+Inc./view-part/?ref=eda"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "STANDARD" "Manufacturer Recommendation"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "PARTREV" "1.2"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/2450FM07D0034T/Johanson+Technology+Inc./view-part/?ref=snap"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MP" "2450FM07D0034T"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Purchase-URL" "https://www.snapeda.com/api/url_track_click_mouser/?unipart_id=3227855&manufacturer=Johanson Technology Inc.&part_name=2450FM07D0034T&search_term=None"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Description_1" "\n2.4GHz ~ 2.5GHz Frequency - RF Filter (Radio Frequency) 100MHz Bandwidth 0.75dB 0402 (1005 Metric), 4 PC Pad\n"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "Johanson Technology"
-			(at 347.98 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "97066eac-dd71-4359-b020-c2437ffe4be9")
-		)
-		(pin "2"
-			(uuid "3b2d9150-3175-421c-af99-caacf377678c")
-		)
-		(pin "3"
-			(uuid "aff66fd9-4b22-4de4-aa8f-33eee5a714b7")
-		)
-		(pin "4"
-			(uuid "4c550da8-f52e-4f7e-80b0-263a09bf51a0")
-		)
-		(instances
-			(project "DangerDoughnut"
-				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
-					(reference "FL2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 111.76 245.11 90)
 		(unit 1)
@@ -24471,7 +24827,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 347.6752 26.67 0)
 			(effects
 				(font
