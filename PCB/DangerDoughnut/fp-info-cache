@@ -1,4 +1,4 @@
-43008355271702
+46462323895178
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -54656,6 +54656,13 @@ ANT_47948-0001_MOL
 4
 4
 Danger_Doughnut_Lib
+CP_Right_Angle_D6.3_P2.50_H16.5
+
+
+0
+2
+2
+Danger_Doughnut_Lib
 DR74
 
 DR74-150-R 
@@ -54732,6 +54739,13 @@ MMC5983MA
 0
 16
 16
+Danger_Doughnut_Lib
+Pad_Button
+
+
+0
+2
+2
 Danger_Doughnut_Lib
 QFN24_4X4_SEM
 

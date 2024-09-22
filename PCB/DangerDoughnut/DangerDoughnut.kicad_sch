@@ -8952,6 +8952,12 @@
 		(uuid "d0fb395a-0239-4117-8c9b-46a49bba39c2")
 	)
 	(junction
+		(at 383.54 87.63)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d104df63-5602-4ec5-9cac-0bd0fde3cd35")
+	)
+	(junction
 		(at 121.92 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -9241,7 +9247,7 @@
 	)
 	(wire
 		(pts
-			(xy 381 87.63) (xy 384.81 87.63)
+			(xy 381 87.63) (xy 383.54 87.63)
 		)
 		(stroke
 			(width 0)
@@ -9888,6 +9894,16 @@
 			(type default)
 		)
 		(uuid "9a51eeb2-6484-4ad3-bdde-144c1bcb1b5c")
+	)
+	(wire
+		(pts
+			(xy 383.54 87.63) (xy 384.81 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d6d3ea9-0d70-4084-af72-670583f04b5f")
 	)
 	(wire
 		(pts
@@ -10696,7 +10712,7 @@
 	)
 	(global_label "LED_BOTTOM"
 		(shape input)
-		(at 292.1 64.77 180)
+		(at 292.1 54.61 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10706,7 +10722,7 @@
 		)
 		(uuid "03746d14-14f6-4d43-9db2-41042f562caf")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 277.3825 64.77 0)
+			(at 277.3825 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10894,7 +10910,7 @@
 	)
 	(global_label "ESC_L"
 		(shape input)
-		(at 292.1 59.69 180)
+		(at 262.89 62.23 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10904,7 +10920,7 @@
 		)
 		(uuid "20664b82-2ab0-41df-b1de-f66afcf8a68c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 283.4906 59.69 0)
+			(at 254.2806 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11158,7 +11174,7 @@
 	)
 	(global_label "Accel2_CS"
 		(shape input)
-		(at 292.1 54.61 180)
+		(at 262.89 59.69 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11168,7 +11184,7 @@
 		)
 		(uuid "4dc40861-1268-4551-98f0-ea7398307562")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 279.4386 54.61 0)
+			(at 250.2286 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12082,7 +12098,7 @@
 	)
 	(global_label "LED_SCK"
 		(shape input)
-		(at 292.1 77.47 180)
+		(at 292.1 59.69 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -12092,7 +12108,7 @@
 		)
 		(uuid "d151553a-966f-4a24-bb00-7a52f32b2b94")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 280.9506 77.47 0)
+			(at 280.9506 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15455,7 +15471,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+		(property "Footprint" "Danger_Doughnut_Lib:CP_Right_Angle_D6.3_P2.50_H16.5"
 			(at 58.1152 224.79 0)
 			(effects
 				(font
@@ -18408,6 +18424,72 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 383.54 87.63 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6fa427c5-cb07-4c32-8d76-9e12a30fb68b")
+		(property "Reference" "#PWR0105"
+			(at 383.54 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 385.572 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 383.54 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 383.54 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 383.54 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "85268d90-6850-4d0b-975b-74902cd98cbf")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR0105")
 					(unit 1)
 				)
 			)
@@ -23055,7 +23137,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A"
+		(property "Footprint" "Danger_Doughnut_Lib:Pad_Button"
 			(at 287.02 31.75 0)
 			(effects
 				(font
@@ -24262,7 +24344,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A"
+		(property "Footprint" "Danger_Doughnut_Lib:Pad_Button"
 			(at 389.89 82.55 0)
 			(effects
 				(font
