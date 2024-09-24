@@ -181,6 +181,7 @@
         0.0,
         0.125,
         0.2,
+        0.35,
         0.5,
         1.0,
         1.5
@@ -477,7 +478,7 @@
       },
       {
         "bus_width": 12,
-        "clearance": 0.1,
+        "clearance": 0.5,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -487,7 +488,7 @@
         "name": "50ohm",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3424,
+        "track_width": 0.3421,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
