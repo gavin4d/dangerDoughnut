@@ -58,7 +58,31 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "clearance|82389376|52629792|083bf159-25d5-4ac7-9316-557d8e70b1ee|269dec01-1fb3-45d6-afd9-6841c41f243d",
+        "clearance|82410917|68123667|d2858d42-0537-4f05-beff-0867e3369fb3|b955ae20-5bd0-4823-8bf7-29068b17650a",
+        "clearance|82587130|68466992|d2858d42-0537-4f05-beff-0867e3369fb3|090106f5-57e7-41df-b283-6fb1d36e57a1",
+        "clearance|82601864|68452258|64daa2e1-fe30-4e80-80f3-d27020855385|d2858d42-0537-4f05-beff-0867e3369fb3",
+        "clearance|82753362|68247399|fcdc0d6b-8f1e-4b8f-9eba-307d24b71a4c|d2858d42-0537-4f05-beff-0867e3369fb3",
+        "clearance|82765165|68234834|bcefd204-1b5e-4ff0-801e-436103b79a50|d2858d42-0537-4f05-beff-0867e3369fb3",
+        "clearance|82800987|52175287|6ce06526-9234-40b6-b7e5-f995366aa55d|269dec01-1fb3-45d6-afd9-6841c41f243d",
+        "clearance|83384351|51139375|559b59ac-51c1-4761-8241-11a79d555693|6ce06526-9234-40b6-b7e5-f995366aa55d",
+        "clearance|83535356|67323224|37d5dee7-0e56-417b-93a6-d904432fd6d2|ce8b9d02-084b-4d29-88e6-2666b1fa8ff9",
+        "clearance|83699013|50824713|559b59ac-51c1-4761-8241-11a79d555693|172dc01b-5985-4be9-b2e7-642c219a74ee",
+        "clearance|84110624|50370208|e63f020f-f192-49d7-9526-4796a7a90f74|172dc01b-5985-4be9-b2e7-642c219a74ee",
+        "clearance|85265206|66555626|b811a9cf-08e9-48dc-99bc-6e5cff7114d4|dbf60679-2537-4f5b-8482-badb23ee4132",
+        "clearance|85529737|66501763|c2affd63-941a-4a1b-ab04-f1ebaba4e0ca|4b49e29a-3494-4947-a36c-1c1ddb33affd",
+        "clearance|85529737|66501763|dbb23d5b-fd9b-4aef-a934-5f6080aaee4a|4b49e29a-3494-4947-a36c-1c1ddb33affd",
+        "clearance|85531500|66000000|3446ff17-959a-48df-a71f-c2c57c5c7ab7|c2affd63-941a-4a1b-ab04-f1ebaba4e0ca",
+        "clearance|85531500|66000000|82004a74-869f-43da-9140-f5ca60180f50|c2affd63-941a-4a1b-ab04-f1ebaba4e0ca",
+        "clearance|85531500|67059142|876f5a5f-db92-4cce-8606-f4a5655ab111|c2affd63-941a-4a1b-ab04-f1ebaba4e0ca",
+        "clearance|88550000|50150000|aeb5f076-3205-489c-8fea-2cfaa6c29151|ac3b9b34-8fa7-4bea-a847-8ae1d8104c17",
+        "clearance|88550001|50550000|8734f299-93b3-46d8-8a7d-0d4c4799d998|aeb5f076-3205-489c-8fea-2cfaa6c29151",
+        "solder_mask_bridge|83199480|67411612|ce8b9d02-084b-4d29-88e6-2666b1fa8ff9|47abd831-31ef-40a6-894d-08faf087f2e7",
+        "solder_mask_bridge|83464645|67924264|47abd831-31ef-40a6-894d-08faf087f2e7|3132104e-9e56-4119-b5cd-316ad8bd590b",
+        "solder_mask_bridge|83659100|67199481|f9626296-8819-4f71-aebb-5e2d9e41a64c|ce8b9d02-084b-4d29-88e6-2666b1fa8ff9",
+        "solder_mask_bridge|83800520|67340901|f9626296-8819-4f71-aebb-5e2d9e41a64c|3132104e-9e56-4119-b5cd-316ad8bd590b"
+      ],
       "meta": {
         "version": 2
       },
@@ -68,7 +92,7 @@
         "connection_width": "warning",
         "copper_edge_clearance": "error",
         "copper_sliver": "warning",
-        "courtyards_overlap": "error",
+        "courtyards_overlap": "warning",
         "diff_pair_gap_out_of_range": "error",
         "diff_pair_uncoupled_length_too_long": "error",
         "drill_out_of_range": "error",
@@ -111,7 +135,7 @@
         "tracks_crossing": "error",
         "unconnected_items": "error",
         "unresolved_variable": "error",
-        "via_dangling": "warning",
+        "via_dangling": "ignore",
         "zones_intersect": "error"
       },
       "rules": {
@@ -123,13 +147,13 @@
         "min_hole_to_hole": 0.2,
         "min_microvia_diameter": 0.2,
         "min_microvia_drill": 0.1,
-        "min_resolved_spokes": 2,
+        "min_resolved_spokes": 1,
         "min_silk_clearance": 0.0,
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.15,
         "min_track_width": 0.1,
-        "min_via_annular_width": 0.2,
+        "min_via_annular_width": 0.15,
         "min_via_diameter": 0.25,
         "solder_mask_to_copper_clearance": 0.0,
         "use_height_for_length_calcs": true
@@ -220,6 +244,10 @@
         {
           "diameter": 0.25,
           "drill": 0.15
+        },
+        {
+          "diameter": 1.1,
+          "drill": 0.75
         }
       ],
       "zones_allow_external_fillets": false
