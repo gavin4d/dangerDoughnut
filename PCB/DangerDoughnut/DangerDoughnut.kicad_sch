@@ -9000,10 +9000,22 @@
 		(uuid "17af668e-4a07-42bd-b9b7-d93d37c0539e")
 	)
 	(junction
+		(at 243.84 226.06)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "189b1734-0ec0-4a3a-87ff-b80497e7ebdb")
+	)
+	(junction
 		(at 135.89 251.46)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "18f81377-cc4c-4184-b269-842a0d810667")
+	)
+	(junction
+		(at 236.22 220.98)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1fe69b36-7eea-4abc-a330-d8bbbe84eb5c")
 	)
 	(junction
 		(at 157.48 251.46)
@@ -9222,6 +9234,12 @@
 		(uuid "b351143b-a266-4e56-8086-030e96a629d7")
 	)
 	(junction
+		(at 243.84 215.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b87d8ddc-026e-4fcd-a331-783a1627fa22")
+	)
+	(junction
 		(at 394.97 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -9342,6 +9360,14 @@
 	(no_connect
 		(at 383.54 218.44)
 		(uuid "0bd16ecb-c89c-46e4-9259-7bc84a6d377a")
+	)
+	(no_connect
+		(at 240.03 226.06)
+		(uuid "0ea618c3-6440-4119-8b56-2536fe8160c8")
+	)
+	(no_connect
+		(at 240.03 215.9)
+		(uuid "174ebc46-dafd-48c3-a5ca-9c21d6f21bd1")
 	)
 	(no_connect
 		(at 368.3 162.56)
@@ -9757,6 +9783,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 215.9) (xy 236.22 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "33ecc6a0-a298-4e62-ae73-44b220b0f63f")
+	)
+	(wire
+		(pts
 			(xy 43.18 219.71) (xy 43.18 220.98)
 		)
 		(stroke
@@ -9894,6 +9930,16 @@
 			(type default)
 		)
 		(uuid "4d990e3f-db72-490d-93fe-e8a4b345b291")
+	)
+	(wire
+		(pts
+			(xy 236.22 220.98) (xy 236.22 226.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4eddd429-3ef3-4566-9aa9-d12859ae1e93")
 	)
 	(wire
 		(pts
@@ -10227,6 +10273,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 220.98) (xy 238.76 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f218902-58e9-458d-8115-0b8d6a781e7e")
+	)
+	(wire
+		(pts
 			(xy 251.46 218.44) (xy 251.46 215.9)
 		)
 		(stroke
@@ -10364,16 +10420,6 @@
 			(type default)
 		)
 		(uuid "90affab4-77bf-489d-afa9-94191dba7cee")
-	)
-	(wire
-		(pts
-			(xy 288.29 77.47) (xy 292.1 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "91720b75-9c17-46a9-b8c2-6ac62d6dec74")
 	)
 	(wire
 		(pts
@@ -10694,16 +10740,6 @@
 			(type default)
 		)
 		(uuid "bc01fcb2-e852-4fe4-9b7d-1adb11bc348e")
-	)
-	(wire
-		(pts
-			(xy 288.29 85.09) (xy 292.1 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bee0e13e-00bc-4568-baa5-265ee142a2f4")
 	)
 	(wire
 		(pts
@@ -11064,6 +11100,16 @@
 			(type default)
 		)
 		(uuid "ef6466ce-2b52-476d-9537-7a52d5c947be")
+	)
+	(wire
+		(pts
+			(xy 234.95 220.98) (xy 236.22 220.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efd018d1-e451-405d-9743-4a65a3abf85f")
 	)
 	(wire
 		(pts
@@ -22224,6 +22270,73 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 259.08 95.25 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "777f58f1-fcf4-4a75-86b7-3f4d77bcdce7")
+		(property "Reference" "#PWR0115"
+			(at 265.43 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 262.89 95.2499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 259.08 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "67d782e3-45f8-4b2c-abaf-3ae84848cdd1")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "#PWR0115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 217.17 232.41 270)
 		(unit 1)
@@ -24787,6 +24900,75 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR0104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 240.03 215.9 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9625a2e7-eccf-4466-bf8d-18a2186497fa")
+		(property "Reference" "C43"
+			(at 241.046 214.63 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "20pF"
+			(at 237.998 212.598 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric_Pad0.74x0.62mm_HandSolder"
+			(at 243.84 214.9348 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 240.03 215.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 240.03 215.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ffd13fb9-5a82-45aa-8c96-153dfcd5db44")
+		)
+		(pin "1"
+			(uuid "613ec716-deb1-4766-85ee-0ef8abef5a49")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "C43")
 					(unit 1)
 				)
 			)
@@ -27373,7 +27555,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 238.76 220.98 270)
+		(at 234.95 220.98 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -27382,7 +27564,7 @@
 		(fields_autoplaced yes)
 		(uuid "b9a1aa23-c2c2-4f92-8f05-57d081e1ed3a")
 		(property "Reference" "#PWR062"
-			(at 232.41 220.98 0)
+			(at 228.6 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27391,7 +27573,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 233.68 220.98 0)
+			(at 229.87 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27399,7 +27581,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 238.76 220.98 0)
+			(at 234.95 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27408,7 +27590,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 238.76 220.98 0)
+			(at 234.95 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27417,7 +27599,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 238.76 220.98 0)
+			(at 234.95 220.98 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27976,7 +28158,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
-		(at 283.21 77.47 0)
+		(at 254 95.25 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -27984,7 +28166,7 @@
 		(dnp no)
 		(uuid "c08abce1-d308-4d2e-a2f2-e397fd357209")
 		(property "Reference" "J11"
-			(at 281.686 77.724 0)
+			(at 252.476 95.504 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27992,7 +28174,7 @@
 			)
 		)
 		(property "Value" "Conn_01x01_Pin"
-			(at 283.845 74.93 0)
+			(at 254.635 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28001,7 +28183,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Wire:SolderWirePad_1x01_SMD_1x2mm"
-			(at 283.21 77.47 0)
+			(at 254 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28010,7 +28192,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 283.21 77.47 0)
+			(at 254 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28019,7 +28201,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated"
-			(at 283.21 77.47 0)
+			(at 254 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -29434,6 +29616,75 @@
 			(project "DangerDoughnut"
 				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
 					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 240.03 226.06 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d8bd980b-fafd-4f5e-a7cf-7d00040674e4")
+		(property "Reference" "C44"
+			(at 237.744 232.41 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "20pF"
+			(at 237.744 229.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric_Pad0.74x0.62mm_HandSolder"
+			(at 243.84 225.0948 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 240.03 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 240.03 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "85256cca-318c-48ef-b527-0909ce0de059")
+		)
+		(pin "1"
+			(uuid "862b42bf-0e87-4f69-8e8d-e09ebd11c962")
+		)
+		(instances
+			(project "DangerDoughnut"
+				(path "/4036fe7f-48e1-40e6-b3b7-d8935a605c7b"
+					(reference "C44")
 					(unit 1)
 				)
 			)
