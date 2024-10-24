@@ -69,8 +69,8 @@
 	)
 	(attr through_hole)
 	(fp_line
-		(start -3.015001 -0.015)
-		(end -2.385001 -0.015)
+		(start -1.63 1.5)
+		(end -1 1.5)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -79,8 +79,8 @@
 		(uuid "10e53a62-7afa-4959-896e-337f5b596826")
 	)
 	(fp_line
-		(start -2.700001 -0.33)
-		(end -2.7 0.3)
+		(start -1.315 1.185)
+		(end -1.314999 1.815)
 		(stroke
 			(width 0.12)
 			(type solid)
