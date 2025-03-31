@@ -1,0 +1,4 @@
+﻿Designator,Footprint,Quantity,Value,LCSC Part #
+"J1, J2",AMASS_XT30UPB-F_1x02_P5.0mm_Vertical,2,Conn_01x02_Pin,
+"J3, J4",AMASS_XT30UPB-F_1x02_P5.0mm_Vertical,2,Conn_01x02_Socket,
+SW1,SMTSO2515_Switch,1,~,
