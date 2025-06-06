@@ -107,15 +107,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1743421806,
-        "narHash": "sha256-tfR6DwK7Q3dmW7nevu2aE5mO/SUuB4GkwtWTs2bFYUE=",
+        "lastModified": 1744880631,
+        "narHash": "sha256-6I/5vG9wHo6tmR+zTejvyoKF5iw9p6unyPDe3lbeJfo=",
         "owner": "gagnonsilas",
         "repo": "telometer",
-        "rev": "14bc6c374a637eda12b860f544a4501a26895b66",
+        "rev": "fb25b85f61b70e3210ab42c8adc30670fd769c73",
         "type": "github"
       },
       "original": {
         "owner": "gagnonsilas",
+        "ref": "bluetooth",
         "repo": "telometer",
         "type": "github"
       }

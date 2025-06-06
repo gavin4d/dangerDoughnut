@@ -1,5 +1,7 @@
+#pragma once
 #include <stdint.h>
 #include <esp_timer.h>
+// #include "donutPhysics.h"
 
 #define LSB2DEG 360/65536
 #define DEG2LSB 65536/360
@@ -13,11 +15,11 @@
 // State of the system
 struct systemState{
     uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
-    double angularVelocity; // angular velocity measurement in radians per second
-    double angularAcceleration; // angular acceleration measurement in radians per second per second
-    double variance_A; // variance estimate of the angle measurement
-    double variance_AV; // variance estimate of the angular velocity measurement
-    double variance_AA; // variance estimate of the angular acceleration measurement
+    float angular_velocity; // angular velocity measurement in radians per second
+    float angular_acceleration; // angular acceleration measurement in radians per second per second
+    float variance_A; // variance estimate of the angle measurement
+    float variance_AV; // variance estimate of the angular velocity measurement
+    float variance_AA; // variance estimate of the angular acceleration measurement
     uint64_t time; // time of state
 };
 
@@ -40,7 +42,7 @@ class kalmanFilter {
          * @param variance_A variance estimate of the angle measurement
          * @param variance_AV variance estimate of the angular velocity measurement
          */
-        void makeMeasurement(double angle, double angularVelocity, double variance_A, double variance_AV);
+        void makeMeasurement(float angle, float angularVelocity, float variance_A, float variance_AV);
 
         /**
          * Input a measurement to the kalman filter for this cycle
@@ -54,14 +56,14 @@ class kalmanFilter {
          */
         systemState stateUpdate();
 
-        void adjustAngle(double angle);
-        void adjustVelocity(double velocity);
-        void adjustAccel(double accel);
+        void adjustAngle(float angle);
+        void adjustVelocity(float velocity);
+        void adjustAccel(float accel);
 
     private:
         systemState estimateState;
         systemState measurmentState;
-        double deltaTime;
+        float delta_time;
 
         /**
          * @brief Predicts the next system state given the current state using a dynamic model

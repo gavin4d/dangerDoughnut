@@ -111,8 +111,8 @@ const BLEBackend: type = struct {
                 } else {
                     dbus.dbus_message_iter_get_basic(&args, &sigvalue);
                     std.debug.print("Found Device {s}\n", .{sigvalue.?});
-                    if (std.mem.eql(u8, std.mem.span(sigvalue.?), std.mem.span(name.?))) {
-                        std.debug.print("!!!  !!!  Found Danger Doughnut  !!! !!! {s}\n", .{sigvalue.?});
+                    if (std.mem.eql(u8, std.mem.span(sigvalue.?), std.mem.span(name.?))) { // std.mem.concat();
+                        std.debug.print("!!! Found target device {s}\n", .{sigvalue.?});
                         return sigvalue.?;
                     }
                 }
@@ -148,7 +148,7 @@ const BLEBackend: type = struct {
         msgReply = dbus.dbus_connection_send_with_reply_and_block(connection, msgQuery, 100000, dbus_error);
         dbus.dbus_message_unref(msgQuery);
         if (dbus.dbus_error_is_set(dbus_error) != 0) {
-            std.debug.print("Connection error\n", .{});
+            std.debug.print("Connection Error\n", .{});
             dbus.dbus_error_free(dbus_error);
             return false;
         }
@@ -323,16 +323,18 @@ const BLEBackend: type = struct {
             std.debug.print("bluetooth is on\n", .{});
         } else {
             std.debug.print("bluetooth is off\n", .{});
+            return self;
         }
         while (!isConnected()) {
+            std.debug.print("Not Connected. Trying to connect...\n", .{});
             if (!connect(dev_path)) {
-                std.debug.print("Unknown device. Scanning...\n", .{});
+                std.debug.print("Target device is not known to Bluez. Scanning...\n", .{});
                 scanOn();
                 dev_path = findDeviceByMac(dev_path);
                 scanOff();
             }
         }
-        std.debug.print("Device connected\n", .{});
+        std.debug.print("Device connected!\n", .{});
         subscribe();
         thread = std.Thread.spawn(.{}, notifyWorker, .{}) catch undefined;
         return self;

@@ -1,7 +1,7 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    telometer.url = "github:gagnonsilas/telometer";
+    telometer.url = "github:gagnonsilas/telometer/bluetooth";
   };
 
   outputs =

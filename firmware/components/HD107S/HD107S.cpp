@@ -1,5 +1,6 @@
 #include "HD107S.h"
 #include "iostream"
+#include <string.h>
 
 #define TAG "HD107S"
 
@@ -28,18 +29,22 @@ void HD107S::setup(hd107s_config_t config) {
 	HD107S::DMAChannel = config.DMAChannel;
 	HD107S::SPIHost = config.SPIHost;
 	HD107S::clockSpeed = config.clockSpeed;
-	bus_config = {0};
-	bus_config.miso_io_num = -1;
-	bus_config.mosi_io_num = config.dataPin;
-	bus_config.sclk_io_num = config.clockPin;
-	bus_config.quadwp_io_num = -1;
-	bus_config.quadhd_io_num = -1;
-	dev_config = {0};
-	dev_config.clock_speed_hz = config.clockSpeed;
-	dev_config.mode = 3;
-	dev_config.spics_io_num = -1;
-	dev_config.queue_size = 1;
 	transaction.length = (8 * ((2 + numLEDs) * sizeof(hd107s_color_t)));
+    bus_config = {
+		.mosi_io_num = config.dataPin,
+        .miso_io_num = -1,
+        .sclk_io_num = config.clockPin,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 0
+    };
+    dev_config = {
+        .address_bits = 0,
+        .mode = 3,
+        .clock_speed_hz = (int) config.clockSpeed,
+        .spics_io_num = -1,
+        .queue_size = 1,
+    };
 	bus_config.max_transfer_sz = transaction.length;
 
 	spi_bus_initialize(SPIHost, &bus_config, DMAChannel);
@@ -55,7 +60,7 @@ void HD107S::setup(hd107s_config_t config) {
 }
 
 void HD107S::setLED(uint16_t index, hd107s_color_t color) {
-	buffer[index] = SPI_SWAP_DATA_TX(color, 32);
+	buffer[index+1] = SPI_SWAP_DATA_TX(color, 32);
 }
 
 void HD107S::update() {
@@ -68,7 +73,7 @@ void HD107S::update() {
 	spi_device_get_trans_result(device, &t, portMAX_DELAY);
 }
 
-uint32_t HD107S::HSVL(double h, double s, double v, char lum) {
+uint32_t HD107S::HSVL(double h, double s, double v, uint8_t lum) {
 	double      hh, p, q, t, ff;
     long        i;
 	char  r, g, b;

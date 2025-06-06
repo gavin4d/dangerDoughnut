@@ -122,9 +122,9 @@ vec2<float> orientator::getCenterOfRotation(vec3<float> XL_left, vec3<float> XL_
     XL_l.y = -XL_left.y; 
     XL_r.x = -XL_right.x; 
     XL_r.y = -XL_right.y; 
-    MathUtils::rotate(XL_l, XL_l_angle);
+    XL_l = MathUtils::rotate(XL_l, XL_l_angle);
     XL_l = XL_l + XL_l_pos;
-    MathUtils::rotate(XL_r, XL_r_angle);
+    XL_r = MathUtils::rotate(XL_r, XL_r_angle);
     XL_r = XL_r + XL_r_pos;
     float t = ((XL_l_pos.x - XL_r_pos.x)*XL_r.y)/(XL_r.x * XL_l.y - XL_l.x * XL_r.y);
     return XL_l*t + XL_l_pos;
@@ -176,8 +176,8 @@ void orientator::setup(H3LIS331DL accel) {
 
     systemState initialState = {
         .angle = 0,
-        .angularVelocity = 0,
-        .angularAcceleration = 0,
+        .angular_velocity = 0,
+        .angular_acceleration = 0,
         .variance_A = 0.1,
         .variance_AV = 0,
         .variance_AA = 0,
@@ -198,7 +198,7 @@ void orientator::update() {
     
     filter.makeMeasurement(systemState{
                            .angle=measuredHeading,
-                           .angularVelocity=measuredVelocity,
+                           .angular_velocity=measuredVelocity,
                            .variance_A = headingVariance,
                            .variance_AV=velocityVariance,
                            .time = (uint64_t) esp_timer_get_time(),

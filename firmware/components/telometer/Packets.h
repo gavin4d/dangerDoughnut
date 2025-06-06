@@ -13,9 +13,8 @@
   P(N, accel1Avg, vec3f_t)                                                     \
   P(N, accel2Avg, vec3f_t)                                                     \
   P(N, centerOfRotation, vec2f_t)                                              \
-  P(N, xMag, int32_t)                                                          \
-  P(N, yMag, int32_t)                                                          \
-  P(N, zMag, int32_t)                                                          
+  P(N, state, packet_system_state_t)                                           \
+  P(N, mag, vec3l_t)                                                           
 
 #define PACKET_TYPES(P, N)                                                     \
   P(N, uint32_t)                                                               \
@@ -29,10 +28,23 @@
   P(N, vec3_t)                                                                 \
   P(N, vec2f_t)                                                                \
   P(N, vec3f_t)                                                                \
+  P(N, vec3l_t)                                                                \
+  P(N, packet_system_state_t)                                                  \
   P(N, newStruct)                                                              \
   P(N, double)                                                                 \
   P(N, float)
 
+typedef struct packet_system_state_t {
+  uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
+  float angular_velocity; // angular velocity measurement in radians per second
+  float angular_acceleration; // angular acceleration measurement in radians per second per second
+  bool upright;
+  float motor_torque;
+  float motor_percentage;
+  float wheel_velocity; 
+  float battery_voltage;
+  uint64_t time; // time of state
+} packet_system_state_t;
 
 typedef struct cal_en {
   bool
@@ -46,6 +58,10 @@ typedef struct cal_en {
 typedef struct vec3_t {
   int16_t x, y, z;
 } vec3_t;
+
+typedef struct vec3l_t {
+  int32_t x, y, z;
+} vec3l_t;
 
 typedef struct vec2f_t {
   float x, y;

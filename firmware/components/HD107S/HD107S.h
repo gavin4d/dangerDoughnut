@@ -36,7 +36,7 @@ class HD107S {
         void setup(hd107s_config_t config);
         void setLED(uint16_t index, hd107s_color_t color);
         void update();
-        uint32_t HSVL(double h, double s, double v, char lum);
+        uint32_t HSVL(double h, double s, double v, uint8_t lum);
 
     private:
         hd107s_color_t* buffer;
