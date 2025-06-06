@@ -1,2 +1,9 @@
 firmware/build
 firmware/.cache
+firmware/nixpkgs-esp-dev
+PCB/elrs-hardware
+PCB/DangerDoughnut/DangerDoughnut-backups
+PCB/PowerSwitch/PowerSwitch-backups
+PCB/LEDStick/LEDStick-backups
+PCB/XT30RightAngleAdapter/XT30RightAngleAdapter-backups
+~*

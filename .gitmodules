@@ -1,0 +1,3 @@
+[submodule "firmware/components/ESP_CRSF"]
+	path = firmware/components/ESP_CRSF
+	url = https://github.com/DamianK77/ESP_CRSF.git
