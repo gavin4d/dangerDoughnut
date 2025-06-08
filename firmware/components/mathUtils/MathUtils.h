@@ -9,21 +9,22 @@ template<typename T> struct vec2 {
 template<typename T> struct vec3 {
   T x, y, z;
   template<typename R> explicit operator vec3<R>() { return {(R)x, (R)y, (R)z}; }
+  template<typename R> explicit operator vec2<R>() { return {(R)x, (R)y}; }
 };
 
 typedef struct {
   vec2<float> angle;
-} angle;
+} angle_t;
 
 // Dot product
 template<typename T> float operator * (vec2<T> const& a, vec2<T> const& b) { return a.x*b.x + a.y*b.y; }
 template<typename T> float operator * (vec3<T> const& a, vec3<T> const& b) { return a.x*b.x + a.y*b.y + a.z*b.z; }
 
 // Vector addition
-template<typename T> vec2<T> operator - (vec2<T> const& a, vec2<T> const& b) { return {a.x - b.x, a.y - b.y}; }
-template<typename T> vec2<T> operator + (vec2<T> const& a, vec2<T> const& b) { return {a.x + b.x, a.y + b.y}; }
-template<typename T> vec3<T> operator - (vec3<T> const& a, vec3<T> const& b) { return {a.x - b.x, a.y - b.y, a.z - b.z}; }
-template<typename T> vec3<T> operator + (vec3<T> const& a, vec3<T> const& b) { return {a.x + b.x, a.y + b.y, a.z + b.z}; }
+template<typename T> vec2<T> operator - (vec2<T> const& a, vec2<T> const& b) { return {(T)(a.x - b.x), (T)(a.y - b.y)}; }
+template<typename T> vec2<T> operator + (vec2<T> const& a, vec2<T> const& b) { return {(T)(a.x + b.x), (T)(a.y + b.y)}; }
+template<typename T> vec3<T> operator - (vec3<T> const& a, vec3<T> const& b) { return {(T)(a.x - b.x), (T)(a.y - b.y), (T)(a.z - b.z)}; }
+template<typename T> vec3<T> operator + (vec3<T> const& a, vec3<T> const& b) { return {(T)(a.x + b.x), (T)(a.y + b.y), (T)(a.z + b.z)}; }
 
 // Vector scaling
 template<typename T> T operator *(T const& val, float const& scale);
@@ -47,13 +48,13 @@ namespace MathUtils {
 
   template<typename T> T signum(T const& value); // Returns the sign of the number or zero if the number is zero
 
-  angle angleFromRadians(float radians);
-  angle angleFromDegrees(float degrees);
-  angle angleFromRotations(float rotations);
+  angle_t angleFromRadians(float radians);
+  angle_t angleFromDegrees(float degrees);
+  angle_t angleFromRotations(float rotations);
 
-  float getRadians(angle angle);
-  float getDegrees(angle angle);
-  float getRotations(angle angle);
+  float getRadians(angle_t angle);
+  float getDegrees(angle_t angle);
+  float getRotations(angle_t angle);
 
   template<typename T> float dot(vec3<T> const& a, vec3<T> const& b) { return a.x*b.x + a.y*b.y + a.z*b.z; }
 
@@ -80,10 +81,10 @@ namespace MathUtils {
     return {a.x * b.x, a.y * b.y};
   }
 
-  angle negate_angle(angle const& angle);
+  angle_t negate_angle(angle_t const& angle);
 
   template<typename T>
-  T rotate(T const& vector, angle const& angle);
+  T rotate(T const& vector, angle_t const& angle);
   
   template<typename T>
   float length(T const& vector) {
@@ -96,7 +97,7 @@ namespace MathUtils {
   }
 
   template<typename T>
-  angle direction(T const& vector);
+  angle_t direction(T const& vector);
 
   template<typename T>
   T normalize(T const& vector) {
@@ -113,7 +114,7 @@ namespace MathUtils {
     return (cos_theta * vec) + (sin(theta) * cross(axis, vec)) + ((1-cos_theta) * (axis * vec) * axis);
   }
 
-  template<typename T> angle angle_between_vectors(T const& a, T const& b) {
+  template<typename T> angle_t angle_between_vectors(T const& a, T const& b) {
     return {{a.x* b.x + a.y*b.y + a.z * b.z, length<vec3<float>>(cross(a, b))}};
 //    return {{a*b, length<vec3<float>>(cross(a, b))}};
   }
@@ -125,5 +126,5 @@ namespace MathUtils {
 }
 
 // Angle addition
-inline angle operator + (angle const& a, angle const& b) { return {a.angle.x * b.angle.x - a.angle.y * b.angle.y, b.angle.x * a.angle.y + b.angle.y * a.angle.x }; };
-inline angle operator - (angle const& a, angle const& b) { return a + MathUtils::negate_angle(b); }
+inline angle_t operator + (angle_t const& a, angle_t const& b) { return {a.angle.x * b.angle.x - a.angle.y * b.angle.y, b.angle.x * a.angle.y + b.angle.y * a.angle.x }; };
+inline angle_t operator - (angle_t const& a, angle_t const& b) { return a + MathUtils::negate_angle(b); }

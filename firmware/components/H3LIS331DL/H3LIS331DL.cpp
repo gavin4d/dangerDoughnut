@@ -1,4 +1,5 @@
 #include "H3LIS331DL.h"
+#include "MathUtils.h"
 #include "esp_log.h"
 #include <cstdint>
 #include <cstring>
@@ -109,7 +110,7 @@ uint8_t H3LIS331DL::getDeviceID(void) {
     @return The 16-bit signed value for the X axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getX(void) { return read16(H3LIS_OUT_X_L) + offset.x; }
+int16_t H3LIS331DL::getX(void) { return read16(H3LIS_OUT_X_L) >> 4; }
 
 /**************************************************************************/
 /*!
@@ -118,7 +119,7 @@ int16_t H3LIS331DL::getX(void) { return read16(H3LIS_OUT_X_L) + offset.x; }
     @return The 16-bit signed value for the Y axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getY(void) { return read16(H3LIS_OUT_Y_L) + offset.y; }
+int16_t H3LIS331DL::getY(void) { return read16(H3LIS_OUT_Y_L) >> 4; }
 
 /**************************************************************************/
 /*!
@@ -127,14 +128,12 @@ int16_t H3LIS331DL::getY(void) { return read16(H3LIS_OUT_Y_L) + offset.y; }
     @return The 16-bit signed value for the Z axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getZ(void) { return read16(H3LIS_OUT_Z_L) + offset.z; }
+int16_t H3LIS331DL::getZ(void) { return read16(H3LIS_OUT_Z_L) >> 4; }
 
 /**************************************************************************/
 /*!
     @brief  Reads 3x16-bits from the x, y, and z data register
-    @param x reference to return x acceleration data
-    @param y reference to return y acceleration data
-    @param z reference to return z acceleration data
+    @param vec reference to return vector acceleration data
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
@@ -154,22 +153,21 @@ bool H3LIS331DL::getXYZ(vec3<int16_t> &vec) {
     assert(ret==ESP_OK);
     spi_device_release_bus(device);
 
-    vec.x = ((int16_t)(rx_buffer[1] | rx_buffer[2] << 8) >> 4) + offset.x;
-    vec.y = ((int16_t)(rx_buffer[3] | rx_buffer[4] << 8) >> 4) + offset.y;
-    vec.z = ((int16_t)(rx_buffer[5] | rx_buffer[6] << 8) >> 4) + offset.z;
+    vec.x = ((int16_t)(rx_buffer[1] | rx_buffer[2] << 8) >> 4);
+    vec.y = ((int16_t)(rx_buffer[3] | rx_buffer[4] << 8) >> 4);
+    vec.z = ((int16_t)(rx_buffer[5] | rx_buffer[6] << 8) >> 4);
 
-    avg.x += 0.001*(vec.x - avg.x); // rolling average of x axis accel
-    avg.y += 0.001*(vec.y - avg.y); // rolling average of y axis accel
-    avg.z += 0.001*(vec.z - avg.z); // rolling average of z axis accel
+    // avg = avg + ((vec3<float>)vec - avg)/AVERAGE_SIZE; // rolling average of x axis accel
+    // avg.y += (vec.y - avg.y)/AVERAGE_SIZE; // rolling average of y axis accel
+    // avg.z += (vec.z - avg.z)/AVERAGE_SIZE; // rolling average of z axis accel
     
-    return true;
+    return true; // TODO: return false on read fail
 }
 
 /**************************************************************************/
 /*!
     @brief  Reads 2x16-bits from the x, and y data registers
-    @param x reference to return x acceleration data
-    @param y reference to return y acceleration data
+    @param vec reference to return vector acceleration data
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
@@ -186,9 +184,9 @@ bool H3LIS331DL::getXY(vec2<int16_t> &vec) {
     ret=spi_device_polling_transmit(device, &transaction);
     assert(ret==ESP_OK);
 
-    vec.x = (rx_buffer[1] | rx_buffer[2] << 8) + offset.x;
-    vec.y = (rx_buffer[3] | rx_buffer[4] << 8) + offset.y;
-    return true;
+    vec.x = ((int16_t)(rx_buffer[1] | rx_buffer[2] << 8) >> 4);
+    vec.y = ((int16_t)(rx_buffer[3] | rx_buffer[4] << 8) >> 4);
+    return true; // TODO: return false on read fail
 }
 
 /**************************************************************************/
@@ -199,19 +197,17 @@ bool H3LIS331DL::getXY(vec2<int16_t> &vec) {
     @param z reference to return average z acceleration data
 */
 /**************************************************************************/
-vec3<float> H3LIS331DL::getXYZ100Avg() {
-    return avg;
-}
+// vec3<float> H3LIS331DL::getXYZAvg() {
+//     return avg;
+// }
 
-void H3LIS331DL::setOffset(vec3<int16_t> offset) {
-    H3LIS331DL::offset = offset;
-}
+// void H3LIS331DL::setOffset(vec3<int16_t> offset) {
+//     H3LIS331DL::offset = offset;
+// }
 
-void H3LIS331DL::setOffset(vec3<float> offset) {
-    H3LIS331DL::offset.x = offset.x;
-    H3LIS331DL::offset.y = offset.y;
-    H3LIS331DL::offset.z = offset.z;
-}
+// void H3LIS331DL::setOffset(vec3<float> offset) {
+//     H3LIS331DL::offset = (vec3<int16_t>)offset;
+// }
 
 /**************************************************************************/
 /*!
@@ -219,13 +215,11 @@ void H3LIS331DL::setOffset(vec3<float> offset) {
     @return True if the sensor was successfully initialised.
 */
 /**************************************************************************/
-bool H3LIS331DL::setup(h3lis331dl_config_t config) {
+bool H3LIS331DL::setup(sensor_config_t config) {
 
     rx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 7, MALLOC_CAP_DMA);
     tx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 7, MALLOC_CAP_DMA);
 
-    offset = config.offset;
-    
     DMA_channel = config.DMA_channel;
     SPI_host = config.SPI_host;
     clock_speed = config.clock_speed;

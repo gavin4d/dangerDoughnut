@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <stdint.h>
 #include "math.h"
+#include "esp_timer.h"
+
 #define LSB2DEG 360/65536
 #define DEG2LSB 65536/360
 #define RAD2LSB 65536/6.28
@@ -11,6 +13,7 @@
 #define ROT2LSB 65536
 #define LSB2ROT 1/65536
 
+#define PROCESS_NOISE 0.003 // trust the process
 #define SLIP_THRESHOLD 20 // rad/s
 #define STATE_BUF_SIZE 128 // number of previous states to compare against the new parameters
 
@@ -19,8 +22,8 @@ typedef enum {
   WHEEL_RATIO, // radius of wheel divided by distance from center to wheel
   MOTOR_KT_R, // constant affects stall torque. Includes winding resistance (kt/R)
   MOTOR_KI, // constant affects velocity (1/kv)
-  LINEAR_DRAG, // coefficient drag that is linear with time
-  SQUARE_DRAG, // coefficient drag that scales with the square of time
+  LINEAR_DRAG, // coefficient drag that is linear with velocity
+  SQUARE_DRAG, // coefficient drag that scales with the square of velocity
   MOI, // moment of intera of the whole bot
   PARAMETER_COUNT
 } parameters;
@@ -39,7 +42,11 @@ typedef struct {
   uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
   float angular_velocity; // angular velocity measurement in radians per second
   float angular_acceleration; // angular acceleration measurement in radians per second per second
+  float variance_angle; // variance estimate of the angle measurement
+  float variance_velocity; // variance estimate of the angular velocity measurement
+  float variance_acceleration; // variance estimate of the angular acceleration measurement
   bool upright;
+  bool spining;
   float motor_torque;
   float motor_percentage;
   float wheel_velocity; 
@@ -55,6 +62,7 @@ public:
   
   void init();
   void step(system_state_t &current_state, float delta_time);
+  void step(system_state_t &current_state);
   float calcMotorPercent(float angular_velocity);
   void calcGradient();
   void gradientDecent();
@@ -63,6 +71,7 @@ public:
   bool isSlipping(system_state_t &current_state);
 
 private:
+  void stepPhysics(system_state_t &current_state, float delta_time);
   void loadValues();
   float error(system_state_t perdicted_state, system_state_t measured_state);
   void clipAdd(uint16_t param_id, float addend);

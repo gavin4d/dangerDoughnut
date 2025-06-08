@@ -1,4 +1,5 @@
 #include "MMC5983MA.h"
+#include "MathUtils.h"
 #include "esp_log.h"
 #include <bits/std_thread.h>
 #include <cstdint>
@@ -76,12 +77,39 @@ uint8_t MMC5983MA::getDeviceID(void) {
 
 /**************************************************************************/
 /*!
+    @brief  Gets the most recent X axis value
+
+    @return The 16-bit signed value for the X axis
+*/
+/**************************************************************************/
+int16_t MMC5983MA::getX(void) { return 0; }
+
+/**************************************************************************/
+/*!
+    @brief  Gets the most recent Y axis value
+
+    @return The 16-bit signed value for the Y axis
+*/
+/**************************************************************************/
+int16_t MMC5983MA::getY(void) { return 0; }
+
+/**************************************************************************/
+/*!
+    @brief  Gets the most recent Z axis value
+
+    @return The 16-bit signed value for the Z axis
+*/
+/**************************************************************************/
+int16_t MMC5983MA::getZ(void) { return 0; }
+
+/**************************************************************************/
+/*!
     @brief  Reads 3x16-bits from the x, y, and z data register
     @param vec reference to return vector of magnetic field data
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
-bool MMC5983MA::getXYZ(vec3<int32_t> &vec) {
+bool MMC5983MA::getXYZ(vec3<int16_t> &vec) {
     tx_buffer[0] = MMC_X_OUT_0 | MMC_READ;
     spi_transaction_t transaction;
     transaction.flags = 0;
@@ -112,7 +140,7 @@ bool MMC5983MA::getXYZ(vec3<int32_t> &vec) {
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
-bool MMC5983MA::getXY(vec2<int32_t> &vec) {
+bool MMC5983MA::getXY(vec2<int16_t> &vec) {
     tx_buffer[0] = MMC_X_OUT_0 | MMC_READ;
     spi_transaction_t transaction;
     transaction.flags = 0;
@@ -139,7 +167,7 @@ bool MMC5983MA::getXY(vec2<int32_t> &vec) {
     @return True if the sensor was successfully initialised.
 */
 /**************************************************************************/
-bool MMC5983MA::setup(mmc5983ma_config_t config) {
+bool MMC5983MA::setup(sensor_config_t config) {
 
     rx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 8, MALLOC_CAP_DMA);
     tx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 8, MALLOC_CAP_DMA);
@@ -186,8 +214,8 @@ bool MMC5983MA::setup(mmc5983ma_config_t config) {
     // Data rate
     writeRegister(MMC_INTERNAL_CONTROL_1, MMC_BANDWIDTH_800_HZ);
 
-    vec3<int32_t> vec_1 = {0,0,0};
-    vec3<int32_t> vec_2 = {0,0,0};
+    vec3<int16_t> vec_1 = {0,0,0};
+    vec3<int16_t> vec_2 = {0,0,0};
     // SET and RESET to find sensor offsets
     writeRegister(MMC_INTERNAL_CONTROL_0, MMC_SET | MMC_TAKE_MEASURMENT_M);
     vTaskDelay(1);
@@ -201,8 +229,8 @@ bool MMC5983MA::setup(mmc5983ma_config_t config) {
     writeRegister(MMC_INTERNAL_CONTROL_0, MMC_TAKE_MEASURMENT_M);
     vTaskDelay(1);
     getXYZ(vec_2);
-    offset = (vec_1 + vec_2) * 0.5;
-    ESP_LOGI("offsets", "x = %ld, y = %ld, z = %ld", offset.x, offset.y, offset.z);
+    offset = (vec3<int16_t>)((vec3<int16_t>)vec_1 + (vec3<int16_t>)vec_2) * 0.5;
+    ESP_LOGI("offsets", "x = %d, y = %d, z = %d", offset.x, offset.y, offset.z);
     writeRegister(MMC_INTERNAL_CONTROL_0, MMC_SET);
     vTaskDelay(1);
 

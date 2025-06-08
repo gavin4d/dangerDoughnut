@@ -66,8 +66,18 @@ void DonutPhysics::init() {
 // torque reduction when slipping
 // import real data for training
 
+void DonutPhysics::step(system_state_t &current_state) {
+  float delta_time = (esp_timer_get_time() - current_state.time)/1000000;
+  current_state.time = esp_timer_get_time();
+  stepPhysics(current_state, delta_time);
+}
+
 void DonutPhysics::step(system_state_t &current_state, float delta_time) {
   current_state.time += delta_time * 1000000;
+  stepPhysics(current_state, delta_time);
+}
+
+void DonutPhysics::stepPhysics(system_state_t &current_state, float delta_time) {
   current_state.angle += RAD2LSB*(delta_time*current_state.angular_velocity + 0.5*pow(delta_time, 2)*current_state.angular_acceleration);
   current_state.angular_velocity += delta_time*current_state.angular_acceleration;
   const float input_voltage = current_state.battery_voltage * current_state.motor_percentage;
@@ -75,6 +85,9 @@ void DonutPhysics::step(system_state_t &current_state, float delta_time) {
   current_state.motor_torque = param_list[MOTOR_KT_R].value * (input_voltage - back_emf);
   const float drag = param_list[LINEAR_DRAG].value * current_state.angular_velocity + param_list[SQUARE_DRAG].value * pow(current_state.angular_velocity, 2);
   current_state.angular_acceleration = 2 * current_state.motor_torque / (param_list[MOI].value * param_list[WHEEL_RATIO].value) - drag;
+  current_state.variance_angle += pow(delta_time, 2)*current_state.variance_velocity+ 0.25*pow(delta_time, 4)*current_state.variance_acceleration; // this is a estimation and is ignoring covariances
+  current_state.variance_velocity += pow(delta_time, 2)*current_state.variance_acceleration;
+  current_state.variance_acceleration += PROCESS_NOISE;
 }
 
 float DonutPhysics::calcMotorPercent(float angular_velocity) {

@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
-#include <esp_timer.h>
-// #include "donutPhysics.h"
+#include "math.h"
+#include "donutPhysics.h"
 
 #define LSB2DEG 360/65536
 #define DEG2LSB 65536/360
@@ -10,71 +10,13 @@
 #define ROT2LSB 65536
 #define LSB2ROT 1/65536
 
-#define PROCESS_NOISE 0.003 // trust the process
+namespace kalmanFilter {
+    /**
+    * @brief Updates the perdicted state using the measured state to the most likely system state
+    * @param perdicted_state current state of the system as perdicted by a physics model. Make sure to step the physics before running stateUpdate
+    * @param measured_state current state of the system from as read from only sensor inputs. Make sure angle is in LSBs
+    */
+    void stateUpdate(system_state_t& perdicted_state, const system_state_t& measured_state);
 
-// State of the system
-struct systemState{
-    uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
-    float angular_velocity; // angular velocity measurement in radians per second
-    float angular_acceleration; // angular acceleration measurement in radians per second per second
-    float variance_A; // variance estimate of the angle measurement
-    float variance_AV; // variance estimate of the angular velocity measurement
-    float variance_AA; // variance estimate of the angular acceleration measurement
-    uint64_t time; // time of state
-};
-
-class kalmanFilter {
-
-    public:
-
-        kalmanFilter();
-
-        /**
-         * Sets the system state for this cycle
-         * @param state the measured state of the system
-         */
-        void setInitState(systemState state);
-
-        /**
-         * Input a measurement to the kalman filter for this cycle
-         * @param angle angle in radian (0 - 2π) (east = 0, north = pi/2, west = pi, south = 3pi/2)
-         * @param angularVelocity angular velocity measurement in radians per second
-         * @param variance_A variance estimate of the angle measurement
-         * @param variance_AV variance estimate of the angular velocity measurement
-         */
-        void makeMeasurement(float angle, float angularVelocity, float variance_A, float variance_AV);
-
-        /**
-         * Input a measurement to the kalman filter for this cycle
-         * @param state measured state of the system. Make sure angle is in LSBs
-         */
-        void makeMeasurement(systemState state);
-
-        /**
-         * Completes all calculations for this cycle and returns the current calculated system state
-         * @return current state of the system as calculated by the Kalman filter
-         */
-        systemState stateUpdate();
-
-        void adjustAngle(float angle);
-        void adjustVelocity(float velocity);
-        void adjustAccel(float accel);
-
-    private:
-        systemState estimateState;
-        systemState measurmentState;
-        float delta_time;
-
-        /**
-         * @brief Predicts the next system state given the current state using a dynamic model
-         */
-        void predict();
-
-        /**
-         * @brief Uses a state measurement and prediction to output the most likely system state
-         */
-        void update();
-
-        int16_t angleDiff(uint16_t minuend, uint16_t subtrahend);
-
+    int16_t angleDiff(uint16_t minuend, uint16_t subtrahend);
 };

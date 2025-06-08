@@ -1,10 +1,12 @@
 #ifndef H3LIS331DL_H
 #define H3LIS331DL_H
 
+#include "sensor.h"
 #include "driver/spi_master.h"
 #include "esp_heap_caps.h"
 #include "MathUtils.h"
 #include <cstdint>
+#include <cstdlib>
 
 // https://www.st.com/resource/en/datasheet/h3lis331dl.pdf
 
@@ -41,44 +43,35 @@
 #define LSB_TO_MPS2 (0.48) /**< 0.48 m/s/s per lsb */
 
 typedef enum {
-  H3LIS_DATARATE_1000_HZ = 0b11000, /**< 1000Hz Bandwidth */
-  H3LIS_DATARATE_400_HZ = 0b10000, /**< 400Hz Bandwidth */
-  H3LIS_DATARATE_100_HZ = 0b01000, /**< 100Hz Bandwidth */
-  H3LIS_DATARATE_50_HZ = 0b00000  /**< 50Hz Bandwidth (default value) */
+    H3LIS_DATARATE_1000_HZ = 0b11000, /**< 1000Hz Bandwidth */
+    H3LIS_DATARATE_400_HZ = 0b10000, /**< 400Hz Bandwidth */
+    H3LIS_DATARATE_100_HZ = 0b01000, /**< 100Hz Bandwidth */
+    H3LIS_DATARATE_50_HZ = 0b00000  /**< 50Hz Bandwidth (default value) */
 } dataRate_t;
 
 typedef enum {
-  H3LIS_POWER_DOWN = 0b00000000,
-  H3LIS_NORMAL_POWER = 0b00100000,
-  H3LIS_LOW_POWER_10_HZ= 0b11000000,
-  H3LIS_LOW_POWER_5_HZ= 0b10100000,
+    H3LIS_POWER_DOWN = 0b00000000,
+    H3LIS_NORMAL_POWER = 0b00100000,
+    H3LIS_LOW_POWER_10_HZ= 0b11000000,
+    H3LIS_LOW_POWER_5_HZ= 0b10100000,
 } power_t;
 
 typedef enum {
-  H3LIS_X_EN = 0b001,
-  H3LIS_Y_EN = 0b010,
-  H3LIS_Z_EN = 0b100,
-  H3LIS_XYZ_EN = 0b111,
+    H3LIS_X_EN = 0b001,
+    H3LIS_Y_EN = 0b010,
+    H3LIS_Z_EN = 0b100,
+    H3LIS_XYZ_EN = 0b111,
 } axesEnable_t;
 
 typedef enum {
-  H3LIS_400_G = 0b110000,
-  H3LIS_200_G = 0b010000,
-  H3LIS_100_G = 0b000000,
+    H3LIS_400_G = 0b110000,
+    H3LIS_200_G = 0b010000,
+    H3LIS_100_G = 0b000000,
 } h3lisFullScale_t;
 
-struct h3lis331dl_config_t{
-    uint8_t miso_pin;
-    uint8_t mosi_pin;
-    uint8_t clock_pin;
-    uint8_t cs_pin;
-    uint32_t clock_speed = 10000000;
-    uint8_t DMA_channel = SPI_DMA_CH_AUTO;
-    spi_host_device_t SPI_host = SPI2_HOST;
-    vec3<int16_t> offset;
-};
 
-class H3LIS331DL {
+
+class H3LIS331DL : public Sensor {
 
 private:
     esp_err_t ret;
@@ -90,8 +83,8 @@ private:
     spi_device_handle_t device;
     uint8_t *rx_buffer;
     uint8_t *tx_buffer;
-    vec3<int16_t> offset;
-    vec3<float> avg;
+    // vec3<int16_t> offset;
+    // vec3<float> avg;
 public:
     H3LIS331DL();
     ~H3LIS331DL();
@@ -102,12 +95,14 @@ public:
     int16_t getX(void);
     int16_t getY(void);
     int16_t getZ(void);
-    bool getXY(vec2<int16_t> &vec);
     bool getXYZ(vec3<int16_t> &vec);
-    vec3<float> getXYZ100Avg();
-    void setOffset(vec3<int16_t> offset);
-    void setOffset(vec3<float> offset);
-    bool setup(h3lis331dl_config_t config);
+    bool getXY(vec2<int16_t> &vec);
+    bool setup(sensor_config_t config);
+    H3LIS331DL& operator=(const H3LIS331DL& other) {
+        this->rx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 7, MALLOC_CAP_DMA);
+        this->tx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 7, MALLOC_CAP_DMA);
+        return *this;
+    }
 };
 
 

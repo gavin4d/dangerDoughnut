@@ -4,6 +4,7 @@
 #include "driver/spi_master.h"
 #include "esp_heap_caps.h"
 #include "MathUtils.h"
+#include "sensor.h"
 
 // https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/333/MMC5983MA_RevA_4-3-19.pdf
 
@@ -55,41 +56,40 @@ typedef enum {
   MMC_BANDWIDTH_100_HZ = 0b00,  /**< 100Hz */
 } mmc_bandwidth_t;
 
-struct mmc5983ma_config_t{
-    uint8_t miso_pin;
-    uint8_t mosi_pin;
-    uint8_t clock_pin;
-    uint8_t cs_pin;
-    uint32_t clock_speed = 10000000;
-    uint8_t DMA_channel = SPI_DMA_CH_AUTO;
-    spi_host_device_t SPI_host = SPI2_HOST;
-};
+// struct mmc5983ma_config_t{
+//     uint8_t miso_pin;
+//     uint8_t mosi_pin;
+//     uint8_t clock_pin;
+//     uint8_t cs_pin;
+//     uint32_t clock_speed = 10000000;
+//     uint8_t DMA_channel = SPI_DMA_CH_AUTO;
+//     spi_host_device_t SPI_host = SPI2_HOST;
+// };
 
-class MMC5983MA {
+class MMC5983MA : public Sensor {
 
 private:
     esp_err_t ret;
     spi_host_device_t SPI_host;
     int DMA_channel;
     uint32_t clock_speed;
-    spi_bus_config_t bus_config;
+    spi_bus_config_t bus_config = {};
     spi_device_handle_t device;
     uint8_t *rx_buffer;
     uint8_t *tx_buffer;
-    vec3<int32_t> offset = {0,0,0};
+    vec3<int16_t> offset = {0,0,0};
 public:
     MMC5983MA();
     ~MMC5983MA();
     void writeRegister(uint8_t reg, uint8_t value);
     uint8_t readRegister(uint8_t reg);
-    int16_t read16(uint8_t reg);
     uint8_t getDeviceID(void);
     int16_t getX(void);
     int16_t getY(void);
     int16_t getZ(void);
-    bool getXYZ(vec3<int32_t> &vec);
-    bool getXY(vec2<int32_t> &vec);
-    bool setup(mmc5983ma_config_t config);
+    bool getXYZ(vec3<int16_t> &vec);
+    bool getXY(vec2<int16_t> &vec);
+    bool setup(sensor_config_t config);
 };
 
 
