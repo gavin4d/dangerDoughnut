@@ -15,14 +15,19 @@ struct sensor_config_t{
 
 class Sensor {
     public:
-        vec3<int16_t> offset;
-        vec2<float> pos; // meters
+        vec3<float> offset = {0,0,0};
+        vec2<float> pos = {0,0}; // meters
         angle_t angle;
         virtual bool setup(sensor_config_t config) = 0;
         virtual uint8_t getDeviceID(void) = 0;
-        virtual int16_t getX(void) = 0;
-        virtual int16_t getY(void) = 0;
-        virtual int16_t getZ(void) = 0;
-        virtual bool getXY(vec2<int16_t> &vec) = 0;
-        virtual bool getXYZ(vec3<int16_t> &vec) = 0;
+        virtual int16_t readX(void) = 0;
+        virtual int16_t readY(void) = 0;
+        virtual int16_t readZ(void) = 0;
+        virtual bool readXY(vec2<int16_t> &vec) = 0;
+        virtual bool readXYZ(vec3<int16_t> &vec) = 0;
+        bool getXYZ(vec3<int16_t> &vec) {
+            bool return_value = readXYZ(vec);
+            vec = vec - (vec3<int16_t>) offset;
+            return return_value;
+        }
 };

@@ -37,7 +37,7 @@
   };
 
 typedef struct TelometerData {
-  void *pointer;
+  void *pointer = nullptr;
   size_t size;
   uint8_t type;
   uint8_t queued;

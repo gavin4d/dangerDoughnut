@@ -1,33 +1,41 @@
 #ifndef ORIENTATOR_H
 #define ORIENTATOR_H
 
+#include "H3LIS331DL.h"
 #include "esp_timer.h"
 #include "sensor.h"
 #include "donutPhysics.h"
 #include "kalmanFilter.h"
 #include "math.h"
 #include "MathUtils.h"
+#include "nvs_flash.h"
+#include "nvs.h"
 #include <cstdint>
 
 #define ROLLING_AVERAGE_SIZE 500
-#define SPINNING_THRESHOLD 13 // rad/s
-#define SENSOR_MAG_VARIENCE state.angular_velocity > SPINNING_THRESHOLD ? 0.01f : 0.001f
-#define SENSOR_XL_VARIENCE state.angular_velocity > SPINNING_THRESHOLD ? 0.003f : 0.1f
+#define SPINNING_THRESHOLD 24 // rad/s
+const float SENSOR_XL_VARIENCE_SCALAR = 0.25 / 0.04131; // 0.25 from square root, sensor distace
 
-class orientator {
+class Orientator {
 
     public:
-        vec2<float> CoR;
+        vec2<float> CoR = {0,0};
         vec3<int16_t> vec_m = {0,0,0};
-        vec3<float> accel_avg_1, accel_avg_2;
-        vec3<int16_t> accel_val_1, accel_val_2;
+        vec3<float> accel_avg_1 = {0,0,0}, accel_avg_2 = {0,0,0};
+        vec3<int16_t> accel_val_1 = {0,0,0}, accel_val_2 = {0,0,0};
         system_state_t state;
+        system_state_t measured_state;
+        float accel_varience = 21;
+        float mag_varience = 20000;
 
-        orientator();
-        ~orientator();
+        Orientator();
+        Orientator(DonutPhysics* physics);
+        ~Orientator();
 
         void setup(Sensor* accel_1, Sensor* accel_2, Sensor* mag);
         void update();
+        void readConfig();
+        void writeConfig();
         uint16_t getHeading();
         float getVelocity();
         void setZeroCrossCallback(void(* callback)());
@@ -47,7 +55,9 @@ class orientator {
         Sensor* accel_l;
         Sensor* mag;
         uint64_t zeroCrossingTime = 0; // time stamp of last zero crossing
-
+        bool accel_calibration = false;
+        bool mag_calibration = false;
+        
         esp_timer_handle_t update_timer;
         static esp_timer_handle_t zeroHeadingTimer;
         static void (* zeroCrossCallback)();

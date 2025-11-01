@@ -1,5 +1,7 @@
 #include "HD107S.h"
-#include "iostream"
+#include "driver/spi_master.h"
+#include "esp_err.h"
+#include "portmacro.h"
 #include <string.h>
 
 #define TAG "HD107S"
@@ -11,7 +13,7 @@ HD107S::HD107S() {
 }
 
 HD107S::~HD107S() {
-	free(buffer);
+	free(strip_buffer);
 }
 
 // HD107S& HD107S::operator=(const HD107S &inputHD107S) {
@@ -29,7 +31,8 @@ void HD107S::setup(hd107s_config_t config) {
 	HD107S::DMAChannel = config.DMAChannel;
 	HD107S::SPIHost = config.SPIHost;
 	HD107S::clockSpeed = config.clockSpeed;
-	transaction.length = (8 * ((2 + numLEDs) * sizeof(hd107s_color_t)));
+	transaction.length = (8 * ((1 + numLEDs) * sizeof(hd107s_color_t)));
+	transaction.addr = 0;
     bus_config = {
 		.mosi_io_num = config.dataPin,
         .miso_io_num = -1,
@@ -39,10 +42,11 @@ void HD107S::setup(hd107s_config_t config) {
         .max_transfer_sz = 0
     };
     dev_config = {
-        .address_bits = 0,
+        .address_bits = 32,
         .mode = 3,
         .clock_speed_hz = (int) config.clockSpeed,
         .spics_io_num = -1,
+        .flags = SPI_DEVICE_NO_DUMMY,
         .queue_size = 1,
     };
 	bus_config.max_transfer_sz = transaction.length;
@@ -50,39 +54,41 @@ void HD107S::setup(hd107s_config_t config) {
 	spi_bus_initialize(SPIHost, &bus_config, DMAChannel);
 	spi_bus_add_device(SPIHost, &dev_config, &device);
 
-	size_t size = (numLEDs + 2) * sizeof(hd107s_color_t);
-	buffer = (hd107s_color_t*)heap_caps_malloc(size, MALLOC_CAP_DMA | MALLOC_CAP_32BIT);
-	memset(buffer, 0, size);
-	buffer[0] = 0x0; // start frame
-	buffer[numLEDs+1] = 0xFFFFFFFF; // end frame
-	for (int i=0; i<numLEDs; i++) buffer[i+1] = SPI_SWAP_DATA_TX(0xE0000000, 32); // LED frame
-
+	size_t size = (numLEDs + 1) * sizeof(hd107s_color_t);
+	strip_buffer = (hd107s_color_t*)heap_caps_malloc(size, MALLOC_CAP_DMA | MALLOC_CAP_32BIT);
+	memset(strip_buffer, 0, size);
+	strip_buffer[numLEDs].data = 0xFFFFFFFF; // end frame
 }
 
 void HD107S::setLED(uint16_t index, hd107s_color_t color) {
-	buffer[index+1] = SPI_SWAP_DATA_TX(color, 32);
+	strip_buffer[index] = color;
 }
 
-void HD107S::update() {
-	if (!transaction.tx_buffer) {
-		transaction.tx_buffer = buffer;
-	}
+void HD107S::update(hd107s_color_t* ex_buffer) {
+    spi_transaction_t* t;
+	// skip write instead of blocking if previous write is not finished
+	
+    if (ex_buffer)
+        transaction.tx_buffer = ex_buffer;
+    else
+    	transaction.tx_buffer = strip_buffer;
 
-	spi_device_queue_trans(device, &transaction, portMAX_DELAY);
-	spi_transaction_t* t;
-	spi_device_get_trans_result(device, &t, portMAX_DELAY);
+    spi_device_queue_trans(device, &transaction, 0);
+	if (spi_device_get_trans_result(device, &t, portMAX_DELAY) != ESP_OK)
+	    ;
 }
 
-uint32_t HD107S::HSVL(double h, double s, double v, uint8_t lum) {
-	double      hh, p, q, t, ff;
+hd107s_color_t HD107S::HSVL(float h, float s, float v, uint8_t lum) {
+	float      hh, p, q, t, ff;
     long        i;
-	char  r, g, b;
+	hd107s_color_t color;
+	color.lum = lum;
 
     if(s <= 0.0) {       // < is bogus, just shuts up warnings
-        r = v*255;
-        g = v*255;
-        b = v*255;
-        return HD107S_RGBL(r,g,b,lum);
+        color.r = v*255;
+        color.g = v*255;
+        color.b = v*255;
+        return color;
     }
     hh = h;
     if(hh >= 360.0) hh = 0.0;
@@ -95,37 +101,36 @@ uint32_t HD107S::HSVL(double h, double s, double v, uint8_t lum) {
 
     switch(i) {
     case 0:
-        r = v*255;
-        g = t*255;
-        b = p*255;
+        color.r = v*255;
+        color.g = t*255;
+        color.b = p*255;
         break;
     case 1:
-        r = q*255;
-        g = v*255;
-        b = p*255;
+        color.r = q*255;
+        color.g = v*255;
+        color.b = p*255;
         break;
     case 2:
-        r = p*255;
-        g = v*255;
-        b = t*255;
+        color.r = p*255;
+        color.g = v*255;
+        color.b = t*255;
         break;
-
     case 3:
-        r = p*255;
-        g = q*255;
-        b = v*255;
+        color.r = p*255;
+        color.g = q*255;
+        color.b = v*255;
         break;
     case 4:
-        r = t*255;
-        g = p*255;
-        b = v*255;
+        color.r = t*255;
+        color.g = p*255;
+        color.b = v*255;
         break;
     case 5:
     default:
-        r = v*255;
-        g = p*255;
-        b = q*255;
+        color.r = v*255;
+        color.g = p*255;
+        color.b = q*255;
         break;
     }
-	return HD107S_RGBL(r,g,b,lum);
+	return color;
 } 

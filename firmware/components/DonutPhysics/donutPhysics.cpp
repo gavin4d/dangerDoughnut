@@ -1,4 +1,7 @@
 #include "donutPhysics.h"
+#include "nvs.h"
+#include "esp_log.h"
+#define GRAD_CALC_STEP 0.1
 
 DonutPhysics::DonutPhysics() {
   param_list[WHEEL_COSF] = parameter_t{
@@ -67,7 +70,7 @@ void DonutPhysics::init() {
 // import real data for training
 
 void DonutPhysics::step(system_state_t &current_state) {
-  float delta_time = (esp_timer_get_time() - current_state.time)/1000000;
+  float delta_time = (float)(esp_timer_get_time() - current_state.time)/1000000;
   current_state.time = esp_timer_get_time();
   stepPhysics(current_state, delta_time);
 }
@@ -75,6 +78,11 @@ void DonutPhysics::step(system_state_t &current_state) {
 void DonutPhysics::step(system_state_t &current_state, float delta_time) {
   current_state.time += delta_time * 1000000;
   stepPhysics(current_state, delta_time);
+}
+
+void DonutPhysics::learn() {
+  calcGradient();
+  gradientDecent();
 }
 
 void DonutPhysics::stepPhysics(system_state_t &current_state, float delta_time) {
@@ -85,9 +93,9 @@ void DonutPhysics::stepPhysics(system_state_t &current_state, float delta_time) 
   current_state.motor_torque = param_list[MOTOR_KT_R].value * (input_voltage - back_emf);
   const float drag = param_list[LINEAR_DRAG].value * current_state.angular_velocity + param_list[SQUARE_DRAG].value * pow(current_state.angular_velocity, 2);
   current_state.angular_acceleration = 2 * current_state.motor_torque / (param_list[MOI].value * param_list[WHEEL_RATIO].value) - drag;
-  current_state.variance_angle += pow(delta_time, 2)*current_state.variance_velocity+ 0.25*pow(delta_time, 4)*current_state.variance_acceleration; // this is a estimation and is ignoring covariances
-  current_state.variance_velocity += pow(delta_time, 2)*current_state.variance_acceleration;
-  current_state.variance_acceleration += PROCESS_NOISE;
+  current_state.varience_angle += pow(delta_time * RAD2LSB, 2)*current_state.varience_velocity + 0.25*pow(delta_time * RAD2LSB, 4)*current_state.varience_acceleration; // this is a estimation and is ignoring covariences
+  current_state.varience_velocity += pow(delta_time, 2)*current_state.varience_acceleration;
+  current_state.varience_acceleration += process_noise;
 }
 
 float DonutPhysics::calcMotorPercent(float angular_velocity) {
@@ -109,8 +117,8 @@ void DonutPhysics::calcGradient() {
   for (int param_id = 0; param_id < PARAMETER_COUNT; param_id++) {
     if (param_list[param_id].learning_rate == 0) continue; // no point calculating if we aren't going to use it
     float init_value = param_list[param_id].value;
-    clipAdd(param_id, init_value*0.1);
-    param_list[param_id].gradient = cost()/(init_value*0.1);
+    clipAdd(param_id, init_value*GRAD_CALC_STEP);
+    param_list[param_id].gradient = cost()/(init_value*GRAD_CALC_STEP);
     param_list[param_id].value = init_value;
   }
 }
@@ -125,6 +133,7 @@ float DonutPhysics::cost() {
   return total_square_error/state_buf_size;
 }
 
+// TODO: add more parameters for calculating error
 float DonutPhysics::error(system_state_t perdicted_state, system_state_t measured_state) { // difference between two system states
   return measured_state.angular_velocity - perdicted_state.angular_velocity;
 }
@@ -136,7 +145,22 @@ void DonutPhysics::clipAdd(uint16_t param_id, float addend) {
 }
 
 void DonutPhysics::loadValues() {
-  // for (int i = 0; i < PARAMETER_COUNT; i++) {
-  //   param_list[i].value = preferences.getFloat(param_list[i].EEPROM_name, param_list[i].value);
-  // }
+  nvs_handle_t my_handle;
+  nvs_open("physics", NVS_READWRITE, &my_handle);
+  for (int i = 0; i < PARAMETER_COUNT; i++) {
+    size_t read_size = sizeof(param_list[i].value);
+    nvs_get_blob(my_handle, param_list[i].key, &param_list[i].value, &read_size);
+  }
+  nvs_close(my_handle);
+}
+
+void DonutPhysics::writeValues() {
+  nvs_handle_t my_handle;
+  nvs_open("physics", NVS_READWRITE, &my_handle);
+  for (int i = 0; i < PARAMETER_COUNT; i++) {
+    nvs_set_blob(my_handle, param_list[i].key, &param_list[i].value, sizeof(param_list[i].value));
+  }
+  esp_err_t err = nvs_commit(my_handle);
+  if (err != ESP_OK) ESP_LOGI("NVS", "err %s", esp_err_to_name(err));
+  nvs_close(my_handle);
 }

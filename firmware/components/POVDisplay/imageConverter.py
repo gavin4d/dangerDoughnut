@@ -1,7 +1,8 @@
+import sys
 from PIL import Image
 from numpy import asarray
 
-image = Image.open(r"C:\Users\crazz\Documents\Programming\dangerDonut\components\POVDisplay\input.png")
+image = Image.open(sys.argv[1])
 data = asarray(image)
 output = "const unsigned int sprite [] = {\n"
 for row in data:

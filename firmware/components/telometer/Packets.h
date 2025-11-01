@@ -13,8 +13,14 @@
   P(N, accel1Avg, vec3f_t)                                                     \
   P(N, accel2Avg, vec3f_t)                                                     \
   P(N, centerOfRotation, vec2f_t)                                              \
+  P(N, mag, vec3_t)                                                            \
+  P(N, process_noise, float)                                                   \
+  P(N, accel_varience, float)                                                  \
+  P(N, mag_varience, float)                                                    \
+  P(N, PLL_bias, float)                                                        \
   P(N, state, packet_system_state_t)                                           \
-  P(N, mag, vec3l_t)                                                           
+  P(N, measuredState, packet_system_state_t)                                   \
+  P(N, wheel_power, vec2f_t)                                   
 
 #define PACKET_TYPES(P, N)                                                     \
   P(N, uint32_t)                                                               \
@@ -34,11 +40,15 @@
   P(N, double)                                                                 \
   P(N, float)
 
-typedef struct packet_system_state_t {
+typedef struct {
   uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
   float angular_velocity; // angular velocity measurement in radians per second
   float angular_acceleration; // angular acceleration measurement in radians per second per second
+  float varience_angle; // varience estimate of the angle measurement
+  float varience_velocity; // varience estimate of the angular velocity measurement
+  float varience_acceleration; // varience estimate of the angular acceleration measurement
   bool upright;
+  bool spining;
   float motor_torque;
   float motor_percentage;
   float wheel_velocity; 
@@ -48,11 +58,9 @@ typedef struct packet_system_state_t {
 
 typedef struct cal_en {
   bool
-    XL_l_z_up,
-    XL_r_z_up,
-    Mag_x,
-    Mag_y,
-    Mag_z;
+    XL,
+    Mag,
+    save;
 } cal_en;
 
 typedef struct vec3_t {

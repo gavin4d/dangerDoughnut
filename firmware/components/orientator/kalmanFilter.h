@@ -5,7 +5,7 @@
 
 #define LSB2DEG 360/65536
 #define DEG2LSB 65536/360
-#define RAD2LSB 65536/6.28
+#define RAD2LSB (65536.f/6.28f)
 #define LSB2RAD 6.28/65536
 #define ROT2LSB 65536
 #define LSB2ROT 1/65536

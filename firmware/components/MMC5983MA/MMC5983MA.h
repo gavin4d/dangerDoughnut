@@ -51,9 +51,9 @@ typedef enum {
 
 typedef enum {
   MMC_BANDWIDTH_800_HZ = 0b11, /**< 800Hz */
-  MMC_BANDWIDTH_400_HZ = 0b10, /**< 400Hz */
-  MMC_BANDWIDTH_200_HZ = 0b01, /**< 200Hz */
-  MMC_BANDWIDTH_100_HZ = 0b00,  /**< 100Hz */
+  MMC_BANDWIDTH_400_HZ = 0b100, /**< 400Hz */
+  MMC_BANDWIDTH_200_HZ = 0b010, /**< 200Hz */
+  MMC_BANDWIDTH_100_HZ = 0b000,  /**< 100Hz */
 } mmc_bandwidth_t;
 
 // struct mmc5983ma_config_t{
@@ -84,12 +84,13 @@ public:
     void writeRegister(uint8_t reg, uint8_t value);
     uint8_t readRegister(uint8_t reg);
     uint8_t getDeviceID(void);
-    int16_t getX(void);
-    int16_t getY(void);
-    int16_t getZ(void);
-    bool getXYZ(vec3<int16_t> &vec);
-    bool getXY(vec2<int16_t> &vec);
+    int16_t readX(void);
+    int16_t readY(void);
+    int16_t readZ(void);
+    bool readXYZ(vec3<int16_t> &vec);
+    bool readXY(vec2<int16_t> &vec);
     bool setup(sensor_config_t config);
+    static uint64_t receive_time;
 };
 
 

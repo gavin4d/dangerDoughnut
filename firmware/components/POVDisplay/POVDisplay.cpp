@@ -21,9 +21,9 @@ void POVDisplay::writeLEDColumn(void *args) {
     //ESP_LOGI("write LEDs", "pointer %d", columnPointer);
     for (int i = 0; i < FRAME_HEIGHT; i++) {
         //ESP_LOGI("data", "%x", frameData.getPixel(columnPointer, i));
-        LED.setLED(FRAME_HEIGHT-i, HD107S_INTL(frameData.getPixel(-direction*columnPointer, i), brightness));
+        // LED.setLED(FRAME_HEIGHT-i, HD107S_INTL(frameData.getPixel(-direction*columnPointer, i), brightness));
     }
-    LED.update();
+    LED.update(nullptr);
     columnPointer++;
     if (columnPointer >= FRAME_WIDTH) {
         columnPointer = 0;
@@ -46,9 +46,9 @@ void POVDisplay::makeFrame(double rotationPeriod, int direction) {
 void POVDisplay::makeLEDStrip() {
     esp_timer_stop(writeLEDTimer); // RIP, mysterious watchdog-defying bug (09/2023 - 11/22/2023)
     for (int i = 0; i < FRAME_HEIGHT; i++) {
-        LED.setLED(FRAME_HEIGHT-i, HD107S_INTL(lineData[i], brightness));
+        // LED.setLED(FRAME_HEIGHT-i, HD107S_INTL(lineData[i], brightness));
     }
-    LED.update();
+    LED.update(nullptr);
 }
 
 void POVDisplay::setPixel(uint16_t x, uint16_t y, uint32_t color) {

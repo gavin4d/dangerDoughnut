@@ -110,7 +110,7 @@ uint8_t H3LIS331DL::getDeviceID(void) {
     @return The 16-bit signed value for the X axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getX(void) { return read16(H3LIS_OUT_X_L) >> 4; }
+int16_t H3LIS331DL::readX(void) { return read16(H3LIS_OUT_X_L) >> 4; }
 
 /**************************************************************************/
 /*!
@@ -119,7 +119,7 @@ int16_t H3LIS331DL::getX(void) { return read16(H3LIS_OUT_X_L) >> 4; }
     @return The 16-bit signed value for the Y axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getY(void) { return read16(H3LIS_OUT_Y_L) >> 4; }
+int16_t H3LIS331DL::readY(void) { return read16(H3LIS_OUT_Y_L) >> 4; }
 
 /**************************************************************************/
 /*!
@@ -128,7 +128,7 @@ int16_t H3LIS331DL::getY(void) { return read16(H3LIS_OUT_Y_L) >> 4; }
     @return The 16-bit signed value for the Z axis
 */
 /**************************************************************************/
-int16_t H3LIS331DL::getZ(void) { return read16(H3LIS_OUT_Z_L) >> 4; }
+int16_t H3LIS331DL::readZ(void) { return read16(H3LIS_OUT_Z_L) >> 4; }
 
 /**************************************************************************/
 /*!
@@ -137,7 +137,7 @@ int16_t H3LIS331DL::getZ(void) { return read16(H3LIS_OUT_Z_L) >> 4; }
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
-bool H3LIS331DL::getXYZ(vec3<int16_t> &vec) {
+bool H3LIS331DL::readXYZ(vec3<int16_t> &vec) {
     *tx_buffer = H3LIS_OUT_X_L | H3LIS_READ | H3LIS_MULTIPLE_BYTES;
     spi_transaction_t transaction;
     transaction.flags = 0;
@@ -171,7 +171,7 @@ bool H3LIS331DL::getXYZ(vec3<int16_t> &vec) {
     @return True if the operation was successful, otherwise false.
 */
 /**************************************************************************/
-bool H3LIS331DL::getXY(vec2<int16_t> &vec) {
+bool H3LIS331DL::readXY(vec2<int16_t> &vec) {
     *tx_buffer = H3LIS_OUT_X_L | H3LIS_READ | H3LIS_MULTIPLE_BYTES;
     spi_transaction_t transaction;
     transaction.flags = 0;

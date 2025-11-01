@@ -13,7 +13,7 @@
 #define ROT2LSB 65536
 #define LSB2ROT 1/65536
 
-#define PROCESS_NOISE 0.003 // trust the process
+// #define PROCESS_NOISE 5 // trust the process
 #define SLIP_THRESHOLD 20 // rad/s
 #define STATE_BUF_SIZE 128 // number of previous states to compare against the new parameters
 
@@ -38,13 +38,13 @@ typedef struct {
 } parameter_t;
 
 // State of the system
-typedef struct {
+struct system_state_t {
   uint16_t angle; // angle in 16 bit LSBs (65,536 LSBs per rotation) (east = 0, north = 0x3fff, west = 0x7fff, south = 0xbfff)
   float angular_velocity; // angular velocity measurement in radians per second
   float angular_acceleration; // angular acceleration measurement in radians per second per second
-  float variance_angle; // variance estimate of the angle measurement
-  float variance_velocity; // variance estimate of the angular velocity measurement
-  float variance_acceleration; // variance estimate of the angular acceleration measurement
+  float varience_angle; // varience estimate of the angle measurement
+  float varience_velocity; // varience estimate of the angular velocity measurement
+  float varience_acceleration; // varience estimate of the angular acceleration measurement
   bool upright;
   bool spining;
   float motor_torque;
@@ -52,7 +52,7 @@ typedef struct {
   float wheel_velocity; 
   float battery_voltage;
   uint64_t time; // time of state
-} system_state_t;
+};
 
 class DonutPhysics {
 
@@ -63,6 +63,7 @@ public:
   void init();
   void step(system_state_t &current_state, float delta_time);
   void step(system_state_t &current_state);
+  void learn();
   float calcMotorPercent(float angular_velocity);
   void calcGradient();
   void gradientDecent();
@@ -70,9 +71,12 @@ public:
 
   bool isSlipping(system_state_t &current_state);
 
+  float process_noise = 5;
+
 private:
   void stepPhysics(system_state_t &current_state, float delta_time);
   void loadValues();
+  void writeValues();
   float error(system_state_t perdicted_state, system_state_t measured_state);
   void clipAdd(uint16_t param_id, float addend);
   parameter_t param_list[PARAMETER_COUNT];

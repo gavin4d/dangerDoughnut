@@ -39,8 +39,8 @@
 #define H3LIS_READ (0x80)            /**< read bit */
 #define H3LIS_MULTIPLE_BYTES (0x40)  /**< read multiple bytes */
 
-#define LSB_TO_G (0.195) /**< 195mg per lsb */
-#define LSB_TO_MPS2 (0.48) /**< 0.48 m/s/s per lsb */
+#define LSB_TO_G (0.195f) /**< 195mg per lsb */
+#define LSB_TO_MPS2 (1.913f) /**< 1.913 m/s/s per lsb */
 
 typedef enum {
     H3LIS_DATARATE_1000_HZ = 0b11000, /**< 1000Hz Bandwidth */
@@ -92,11 +92,11 @@ public:
     uint8_t readRegister(uint8_t reg);
     int16_t read16(uint8_t reg);
     uint8_t getDeviceID(void);
-    int16_t getX(void);
-    int16_t getY(void);
-    int16_t getZ(void);
-    bool getXYZ(vec3<int16_t> &vec);
-    bool getXY(vec2<int16_t> &vec);
+    int16_t readX(void);
+    int16_t readY(void);
+    int16_t readZ(void);
+    bool readXYZ(vec3<int16_t> &vec);
+    bool readXY(vec2<int16_t> &vec);
     bool setup(sensor_config_t config);
     H3LIS331DL& operator=(const H3LIS331DL& other) {
         this->rx_buffer = (uint8_t*)heap_caps_aligned_alloc(32, 7, MALLOC_CAP_DMA);
