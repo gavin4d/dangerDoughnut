@@ -11,4 +11,5 @@ firmware/components/POVDisplay/bin/
 firmware/components/POVDisplay/lib/
 firmware/components/POVDisplay/lib64
 firmware/components/POVDisplay/pyvenv.cfg
+firmware/components/DonutDisplay/imgSource/badApple20px/
 ~*
