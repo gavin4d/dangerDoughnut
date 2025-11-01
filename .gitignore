@@ -7,4 +7,8 @@ PCB/PowerSwitch/PowerSwitch-backups
 PCB/LEDStick/LEDStick-backups
 PCB/XT30RightAngleAdapter/XT30RightAngleAdapter-backups
 CAD/GCODE
+components/POVDisplay/bin/
+components/POVDisplay/lib/
+components/POVDisplay/lib64
+components/POVDisplay/pyvenv.cfg
 ~*
