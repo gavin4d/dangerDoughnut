@@ -1,6 +1,5 @@
 firmware/build
 firmware/.cache
-firmware/nixpkgs-esp-dev
 PCB/elrs-hardware
 PCB/DangerDoughnut/DangerDoughnut-backups
 PCB/PowerSwitch/PowerSwitch-backups
