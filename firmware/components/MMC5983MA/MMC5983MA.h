@@ -15,7 +15,7 @@
 #define MMC_Y_OUT_1 (0x03)
 #define MMC_Z_OUT_0 (0x04)
 #define MMC_Z_OUT_1 (0x05)
-#define MMC_XYZ_UT_2 (0x06)
+#define MMC_XYZ_OUT_2 (0x06)
 #define MMC_T_OUT (0x07)
 #define MMC_STATUS (0x08)
 #define MMC_INTERNAL_CONTROL_0 (0x09)
@@ -37,7 +37,18 @@ typedef enum {
   MMC_READ_OTP = 0b01000000
 } mmc_control_0_t;
 
-#define MMC_CONTINUOUS_MODE (0b1000)
+typedef enum {
+  MMC_BANDWIDTH_800_HZ = 0b11, /**< 800Hz */
+  MMC_BANDWIDTH_400_HZ = 0b10, /**< 400Hz */
+  MMC_BANDWIDTH_200_HZ = 0b01, /**< 200Hz */
+  MMC_BANDWIDTH_100_HZ = 0b00,  /**< 100Hz */
+} mmc_bandwidth_t;
+
+typedef enum {
+  MMC_CONTINUOUS_MODE = 0b00001000,
+  MMC_EN_PRD_SET = 0b10000000,
+} mmc_control_2_t;
+
 typedef enum {
   MMC_DATARATE_1000_HZ = 0b111, /**< 1000Hz */
   MMC_DATARATE_200_HZ = 0b110, /**< 200Hz */
@@ -50,11 +61,15 @@ typedef enum {
 } mmc_dataRate_t;
 
 typedef enum {
-  MMC_BANDWIDTH_800_HZ = 0b11, /**< 800Hz */
-  MMC_BANDWIDTH_400_HZ = 0b100, /**< 400Hz */
-  MMC_BANDWIDTH_200_HZ = 0b010, /**< 200Hz */
-  MMC_BANDWIDTH_100_HZ = 0b000,  /**< 100Hz */
-} mmc_bandwidth_t;
+  MMC_SET_1 = 0b0000000,
+  MMC_SET_25 = 0b0010000,
+  MMC_SET_75 = 0b0100000,
+  MMC_SET_100 = 0b0110000,
+  MMC_SET_250 = 0b1000000,
+  MMC_SET_500 = 0b1010000,
+  MMC_SET_1000 = 0b1100000,
+  MMC_SET_2000 = 0b1110000,
+} mmc_set_frequency_t;
 
 // struct mmc5983ma_config_t{
 //     uint8_t miso_pin;
@@ -91,6 +106,8 @@ public:
     bool readXY(vec2<int16_t> &vec);
     bool setup(sensor_config_t config);
     static uint64_t receive_time;
+    static uint8_t receive_flag;
+    static uint64_t send_time;
 };
 
 

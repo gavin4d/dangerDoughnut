@@ -3,12 +3,12 @@
 #include "math.h"
 #include "donutPhysics.h"
 
-#define LSB2DEG 360/65536
-#define DEG2LSB 65536/360
-#define RAD2LSB (65536.f/6.28f)
-#define LSB2RAD 6.28/65536
+#define LSB2DEG (360/65536)
+#define DEG2LSB (65536/360)
+#define RAD2LSB (65536.f/6.2831853072f)
+#define LSB2RAD (6.2831853072f/65536)
 #define ROT2LSB 65536
-#define LSB2ROT 1/65536
+#define LSB2ROT (1/65536)
 
 namespace kalmanFilter {
     /**

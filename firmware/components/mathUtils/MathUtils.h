@@ -57,6 +57,7 @@ namespace MathUtils {
   float getRotations(angle_t angle);
 
   template<typename T> float dot(vec3<T> const& a, vec3<T> const& b) { return a.x*b.x + a.y*b.y + a.z*b.z; }
+  template<typename T> float dot(vec2<T> const& a, vec2<T> const& b) { return a.x*b.x + a.y*b.y; }
 
 
   template<typename T> vec3<T> cross(vec3<T> const& a, vec3<T> const& b) {

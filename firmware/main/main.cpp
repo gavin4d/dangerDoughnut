@@ -1,3 +1,4 @@
+#include "FreeRTOSConfig.h"
 #include "driver/spi_common.h"
 #include "esp_err.h"
 #include "hal/adc_types.h"
@@ -6,6 +7,8 @@
 #include "esp_log.h"
 #include <cstdint>
 #include <functional>
+#include <string>
+#include "math.h"
 #include <numbers>
 #include <stdio.h>
 #include <variant>
@@ -25,8 +28,6 @@
 extern "C" {
     #include "ESP_CRSF.h"
 }
-#include <format>
-#include <iostream>
 
 #include "HD107S.h"
 #include "H3LIS331DL.h"
@@ -56,8 +57,11 @@ H3LIS331DL accel1;
 H3LIS331DL accel2;
 
 MMC5983MA mag;
-
 Orientator orientator;
+
+// extern "C" {
+//     DonutPhysics physics;
+// }
 
 adc_oneshot_unit_handle_t adc2_handle;
 
@@ -72,10 +76,27 @@ float getBattVoltage() {
     return err == ESP_OK ? (float)voltageReading * 19 / 4095 : 0; // 1.1V ref, "6dB" attenuation (actually 4.75dB), 1:10 voltage divider
 }
 
+
+void updateTask(void * arg) {
+    while (1) {
+        orientator.update();
+        vTaskDelay(1);
+    }
+}
+
+void learnTask(void * arg) {
+    while (1) {
+        // physics.learn();
+        vTaskDelay(1);
+    }
+}
+
 extern "C" {
 void app_main(void) {
-
+    
     DonutPhysics physics;
+
+    physics.init();
     orientator = Orientator(&physics);
 
     myBackend = (Telometer::Backend*) new Telometer::BLEBackend();
@@ -153,7 +174,7 @@ void app_main(void) {
     mag_config.clock_pin = 5;
     mag_config.miso_pin = 3;
     mag_config.mosi_pin = 4;
-    mag_config.clock_speed = 10000000;
+    mag_config.clock_speed = 10000000; // 10MHz
     mag_config.cs_pin = 33;
     mag.setup(mag_config);
 
@@ -183,13 +204,16 @@ void app_main(void) {
     ESP_ERROR_CHECK(adc_oneshot_config_channel(adc2_handle, ADC_CHANNEL_3, &adc2_channel_config));
 
     dshot_frequency_t ESC_freq = DSHOT300;
-    bool bidirectional = true;
+    bool bidirectional = true; //TODO: setup bidirectional
     bool TXS_Buffer = true;
 
+    uint8_t ESC_reverse_delay = 0;
     ESCData ESC_L_data;
     ESCData ESC_R_data;
     DShot_ESC L_ESC(ESC_freq, bidirectional, ESC_L_GPIO, TXS_Buffer, ESC_L_data);
+    // L_ESC.Arm_ESC();
     DShot_ESC R_ESC(ESC_freq, bidirectional, ESC_R_GPIO, TXS_Buffer, ESC_R_data);
+    // R_ESC.Arm_ESC();
     vTaskDelay(2000/portTICK_PERIOD_MS);
 
     packets.state.queued = true;
@@ -197,10 +221,12 @@ void app_main(void) {
     orientator.state.battery_voltage = getBattVoltage();
     
     ESP_LOGI(TAG, "Completed Init");
-    // bool reversed = false;
+    bool reversed = false;
 
-    display.drawText(10, 0, 0, "\1 DANGER\nDOUGHNUT", HD107S_RGBL(255, 255, 0, 1));
-    display.setPixel(0, 0, HD107S_RGBL(0, 255, 0, 15));
+    // display.drawText(55, 0, 0, "\1 DANGER\nDOUGHNUT", HD107S_RGBL(255, 127, 127, 1));
+    display.drawText(66, 0, 0, "\1" + std::to_string(Math.round(orientator.getVelocity() * 9.5493)), HD107S_RGBL(255, 127, 127, 1));
+    // display.setPixel(0, 0, HD107S_RGBL(0, 255, 0, 15));
+    display.drawLine(-5, 0, 5, 0, HD107S_RGBL(0, 255, 0, 15));
     // display.drawLine(90, 15, 150, 10, HD107S_RGBL(127, 255, 255, 1));
     // for (int i = 0; i < 20; i++) {
     //     display.render();
@@ -212,7 +238,11 @@ void app_main(void) {
     // display.render();
     display.printFrameBuffer();
     display.swapBuffer();
-
+    // TaskHandle_t orientator_update_task;
+    // xTaskCreate(updateTask, "UPDATE", 8096, 0, configMAX_PRIORITIES, &orientator_update_task);
+    // TaskHandle_t physics_learn_task;
+    // xTaskCreate(learnTask, "LEARN", 2096, 0, tskIDLE_PRIORITY, &physics_learn_task);
+    
     display.display(75, 0);
     while(true) {
         time = ((float)esp_timer_get_time()) / 1000000;
@@ -233,24 +263,38 @@ void app_main(void) {
             // printf("CH1: %0.3f, CH2: %0.3f, CH3: %0.3f, CH4: %0.3f, CH5: %d, CH6: %d, CH7: %d, CH8: %d, CH9: %d, CH10: %0.3f\n", CRSF_convert_stick(channels.ch1), CRSF_convert_stick(channels.ch2), CRSF_convert_stick(channels.ch3), CRSF_convert_stick(channels.ch4), CRSF_convert_switch(channels.ch5), CRSF_convert_switch(channels.ch6), CRSF_convert_switch(channels.ch7), CRSF_convert_switch(channels.ch8), CRSF_convert_switch(channels.ch9), CRSF_convert_analog(channels.ch10));
             const float motor_percentage = CRSF_convert_analog(channels.ch10)*(CRSF_convert_stick(channels.ch3)+1)/2;
             const float x = -CRSF_convert_stick(channels.ch1);
-            const float y = -CRSF_convert_stick(channels.ch2);
+            const float y = CRSF_convert_stick(channels.ch2);
+            orientator.angle_offset += 35*CRSF_convert_stick(channels.ch4);
             // printf("x: %f, y: %f\n", x, y);
             float drive_angle = atan2(y, x) + LSB2RAD*orientator.getHeading();
             if (drive_angle > 2 * std::numbers::pi) drive_angle -= 2 * std::numbers::pi;
             const float drive_power = MAX_MELTY_POWER * hypot(x, y);
             // printf("a: %f, p: %f\n", drive_angle, drive_power);
-            const uint16_t left_motor_power = (uint16_t)(1999*(motor_percentage*(1-drive_power*sin(drive_angle))/fmax(1, motor_percentage + drive_power)) + 48);
+            const uint16_t left_motor_power = (uint16_t)(1999*(motor_percentage*(1-drive_power*sin(drive_angle))/fmax(1, motor_percentage * (1 + drive_power))) + 48);
             // wheel_power = {cos(LSB2RAD*orientator.getHeading()), sin(LSB2RAD*orientator.getHeading())};
-            wheel_power = MathUtils::angleFromRadians(LSB2RAD*orientator.getHeading()).angle;
-            wheel_power = left_motor_power * wheel_power;
+            wheel_power = left_motor_power * MathUtils::angleFromRadians(LSB2RAD*orientator.getHeading()).angle;
             packets.wheel_power.queued = true;
-            const uint16_t right_motor_power = (uint16_t)(1999*(motor_percentage*(1+drive_power*sin(drive_angle))/fmax(1, motor_percentage + drive_power)) + 48);
-            L_ESC.Throttle_Write(left_motor_power);
-            R_ESC.Throttle_Write(right_motor_power);
+            const uint16_t right_motor_power = (uint16_t)(1999*(motor_percentage*(1+drive_power*sin(drive_angle))/fmax(1, motor_percentage * (1 + drive_power))) + 48);
             orientator.state.motor_percentage = motor_percentage;
-            // if (motor_percentage < 0.01 && !CRSF_convert_switch(channels.ch5) == reversed) {
-                // TODO: set motors to reversed
-            // }
+            if (ESC_reverse_delay <= 0) {
+                L_ESC.Throttle_Write(left_motor_power);
+                R_ESC.Throttle_Write(right_motor_power);
+            } else {
+                if (reversed) {
+                    L_ESC.Throttle_Write(8);
+                    R_ESC.Throttle_Write(8);
+                } else {
+                    L_ESC.Throttle_Write(7);
+                    R_ESC.Throttle_Write(7);                    
+                }
+                ESC_reverse_delay --;
+            }
+            if (motor_percentage < 0.01 && CRSF_convert_switch(channels.ch5) != reversed) {
+                reversed = CRSF_convert_switch(channels.ch5);
+                ESC_reverse_delay = 7;
+                // L_ESC.Throttle_Write(48);
+                // R_ESC.Throttle_Write(48);
+            }
             enabled = true;
         } else {
             enabled = false;
@@ -271,6 +315,7 @@ void app_main(void) {
             packets.calibration.queued = true;
             orientator.writeConfig();
         }
+        display.display(orientator.getVelocity(), orientator.state.angular_acceleration);
 
         packets.mag.queued = true;
         
@@ -279,7 +324,8 @@ void app_main(void) {
         packets.deltaTime.queued = true;
         if (telo_delay >= 30) {
             Telometer::update(&telemetry);
-            display.display(orientator.getVelocity(), orientator.state.angular_acceleration);
+            display.PLL_enable = CRSF_convert_switch(channels.ch6) < 2;
+            display.PLL_auto_enable = CRSF_convert_switch(channels.ch6) == 0;
             packets.PLL_bias.queued = true;
             orientator.state.battery_voltage = getBattVoltage();
             telo_delay = 1;
@@ -294,6 +340,10 @@ void app_main(void) {
         } else {
             telo_delay ++;
         }
+        display.drawText(66, 0, 0, "\1" + std::to_string(Math.round(orientator.getVelocity() * 9.5493)), HD107S_RGBL(255, 127, 127, 1));
+        display.drawLine(-5, 0, 5, 0, HD107S_RGBL(0, 255, 0, 15));
+        display.swapBuffer();
+
         deltaTime = ((float)esp_timer_get_time()) / 1000000 - time;
         vTaskDelay(1);
     }

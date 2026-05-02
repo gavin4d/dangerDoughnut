@@ -81,6 +81,8 @@ public:
     static hd107s_color_t* frame_buffer[2];
     static bool displayed_buffer;
     float PLL_bias;
+    static bool PLL_enable;
+    static bool PLL_auto_enable;
 private:
     static Orientator* orientator;
     static uint8_t col_index;
@@ -89,6 +91,7 @@ private:
     float previous_velocity = 0;
     static esp_timer_handle_t displayTimer;
     static esp_timer_handle_t renderTimer;
+    uint8_t last_col_index = 0; 
 
     static void displayColumn(void * args);
     void drawLineHigh(int16_t x0, int16_t y0, int16_t x1, int16_t y1, hd107s_color_t color);

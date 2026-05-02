@@ -1,7 +1,10 @@
 #ifndef DONUT_PHYSICS_H
 #define DONUT_PHYSICS_H
 
-#include <cstdint>
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
+// #include <cstdint>
 #include <stdint.h>
 #include "math.h"
 #include "esp_timer.h"
@@ -20,8 +23,8 @@
 typedef enum {
   WHEEL_COSF, // coefficient between ground and wheels
   WHEEL_RATIO, // radius of wheel divided by distance from center to wheel
-  MOTOR_KT_R, // constant affects stall torque. Includes winding resistance (kt/R)
-  MOTOR_KI, // constant affects velocity (1/kv)
+  MOTOR_R, // Coil resistance [ohm]
+  MOTOR_KV, // motor velocity constant [rad/s / V]
   LINEAR_DRAG, // coefficient drag that is linear with velocity
   SQUARE_DRAG, // coefficient drag that scales with the square of velocity
   MOI, // moment of intera of the whole bot
@@ -51,6 +54,7 @@ struct system_state_t {
   float motor_percentage;
   float wheel_velocity; 
   float battery_voltage;
+  float dt;
   uint64_t time; // time of state
 };
 
@@ -71,17 +75,21 @@ public:
 
   bool isSlipping(system_state_t &current_state);
 
-  float process_noise = 5;
+  float process_noise = 2;
 
 private:
-  void stepPhysics(system_state_t &current_state, float delta_time);
+  void stepPhysics(system_state_t &current_state);
   void loadValues();
   void writeValues();
   float error(system_state_t perdicted_state, system_state_t measured_state);
   void clipAdd(uint16_t param_id, float addend);
   parameter_t param_list[PARAMETER_COUNT];
-  uint16_t state_buf_size = 0;
+  uint16_t state_buf_index = STATE_BUF_SIZE;
+  bool isLeaning = false;
   system_state_t state_buf[STATE_BUF_SIZE];
  
 };
+// #ifdef __cplusplus
+// }
+// #endif
 #endif

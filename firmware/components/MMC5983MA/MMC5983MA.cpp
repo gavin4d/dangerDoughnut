@@ -1,5 +1,7 @@
 #include "MMC5983MA.h"
 #include "MathUtils.h"
+#include "driver/spi_master.h"
+#include "esp_intr_alloc.h"
 #include "esp_log.h"
 #include <bits/std_thread.h>
 #include <cstddef>
@@ -10,6 +12,7 @@
 #include "freertos/task.h"
 
 #include "driver/gpio.h"
+#include "hal/gpio_types.h"
 #include "soc/gpio_num.h"
 
 MMC5983MA::MMC5983MA() {
@@ -112,6 +115,7 @@ int16_t MMC5983MA::readZ(void) { return 0; }
 */
 /**************************************************************************/
 bool MMC5983MA::readXYZ(vec3<int16_t> &vec) {
+    // ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
     spi_transaction_t transaction;
     transaction.flags = 0;
     transaction.addr = MMC_X_OUT_0 | MMC_READ;
@@ -132,6 +136,17 @@ bool MMC5983MA::readXYZ(vec3<int16_t> &vec) {
     vec.x = (rx_buffer[0] << 8 | rx_buffer[1]) - (1<<15) - offset.x;
     vec.y = (rx_buffer[2] << 8 | rx_buffer[3]) - (1<<15) - offset.y;
     vec.z = (rx_buffer[4] << 8 | rx_buffer[5]) - (1<<15) - offset.z;
+
+    // if(receive_flag || gpio_get_level(GPIO_NUM_34)) {
+    //     // ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
+    //     printf(" %llu %u\n", (MMC5983MA::receive_time), (uint8_t)gpio_get_level(GPIO_NUM_34));
+    //     writeRegister(MMC_STATUS, 0b1);
+    //     // writeRegister(MMC_INTERNAL_CONTROL_0, MMC_TAKE_MEASURMENT_M | MMC_INT_EN);
+    //     // MMC5983MA::send_time = esp_timer_get_time();
+    //     receive_flag = 0;
+    //     // vTaskDelay(8);
+    //     // ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
+    // }
     return true;
 }
 
@@ -166,11 +181,15 @@ bool MMC5983MA::readXY(vec2<int16_t> &vec) {
     return true;
 }
 
-uint64_t MMC5983MA::receive_time = 0;
-static void IRAM_ATTR gpio_interrupt_handler(void *args)
-{
-    MMC5983MA::receive_time = esp_timer_get_time();
-}
+// uint64_t MMC5983MA::receive_time = 0;
+// uint8_t MMC5983MA::receive_flag = 0;
+// uint64_t MMC5983MA::send_time = 0;
+// static void IRAM_ATTR gpio_interrupt_handler(void *args)
+// {
+//     MMC5983MA::receive_time = esp_timer_get_time() - MMC5983MA::send_time;
+//     MMC5983MA::send_time = esp_timer_get_time();
+//     MMC5983MA::receive_flag = 1;
+// }
 
 /**************************************************************************/
 /*!
@@ -214,8 +233,7 @@ bool MMC5983MA::setup(sensor_config_t config) {
     assert(ret==ESP_OK);
 
     writeRegister(MMC_INTERNAL_CONTROL_1, 0b10000000); // Reset
-    // vTaskDelay(2);
-    vTaskDelay(10);
+    vTaskDelay(100);
     
     // Check connection
     if (getDeviceID() != 0x30) {
@@ -224,7 +242,6 @@ bool MMC5983MA::setup(sensor_config_t config) {
     }
     // const gpio_num_t INPUT_PIN = GPIO_NUM_34;
 
-    // gpio_pad_select_gpio(INPUT_PIN);
     // gpio_config_t test_config = gpio_config_t{
     //     .pin_bit_mask = ((uint64_t)1 << 34),
     //     .mode = GPIO_MODE_INPUT,
@@ -232,57 +249,50 @@ bool MMC5983MA::setup(sensor_config_t config) {
     //     .pull_down_en = GPIO_PULLDOWN_ENABLE,
     //     .intr_type = GPIO_INTR_POSEDGE,
     // };
-    // gpio_reset_pin(INPUT_PIN);
-    // gpio_set_direction(INPUT_PIN, GPIO_MODE_INPUT);
-    // gpio_pulldown_en(INPUT_PIN);
-    // gpio_pullup_dis(INPUT_PIN);
-    // gpio_set_intr_type(INPUT_PIN, GPIO_INTR_POSEDGE);
     // gpio_config(&test_config);
-
     // gpio_install_isr_service(0);
     // gpio_isr_handler_add(INPUT_PIN, gpio_interrupt_handler, nullptr);
 
     // gpio_dump_io_configuration(stdout, SOC_GPIO_VALID_GPIO_MASK);
 
     // Data rate
+    vTaskDelay(1);
     writeRegister(MMC_INTERNAL_CONTROL_1, MMC_BANDWIDTH_800_HZ);
 
     vec3<int16_t> vec_1 = {0,0,0};
     vec3<int16_t> vec_2 = {0,0,0};
     // SET and RESET to find sensor offsets
-    // writeRegister(MMC_STATUS, 0b00000000);
-    // ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
-    vTaskDelay(1);
-    // writeRegister(MMC_INTERNAL_CONTROL_0, MMC_TAKE_MEASURMENT_M);
-    // uint64_t send_time = esp_timer_get_time();
-    // while (!(readRegister(MMC_STATUS) & 1)) {
-        
-    // }
-    // receive_time = esp_timer_get_time();
-    // ESP_LOGI("mag", "delay=%lld us", receive_time - send_time);
-    // readXYZ(vec_1);
+    vTaskDelay(10);
+    writeRegister(MMC_INTERNAL_CONTROL_0, MMC_TAKE_MEASURMENT_M);
+    vTaskDelay(10);
 
-    // writeRegister(MMC_INTERNAL_CONTROL_0, MMC_RESET | MMC_TAKE_MEASURMENT_M);
-    // readXYZ(vec_2);
-    // offset = (vec3<int16_t>)((vec3<int16_t>)vec_1 + (vec3<int16_t>)vec_2) * 0.5;
-    // ESP_LOGI("offsets", "x = %d, y = %d, z = %d", offset.x, offset.y, offset.z);
-    // writeRegister(MMC_INTERNAL_CONTROL_0, MMC_SET);
+    writeRegister(MMC_INTERNAL_CONTROL_0, MMC_RESET);
+    vTaskDelay(10);
+    writeRegister(MMC_INTERNAL_CONTROL_0, MMC_SET);
+    vTaskDelay(10);
+
+    writeRegister(MMC_INTERNAL_CONTROL_0, MMC_AUTO_SR | MMC_INT_EN); // Auto set/reset
+    vTaskDelay(10);
+    writeRegister(MMC_STATUS, 0b1);
+
+    // writeRegister(MMC_INTERNAL_CONTROL_2, MMC_DATARATE_1000_HZ);
     // vTaskDelay(1);
+    // writeRegister(MMC_INTERNAL_CONTROL_2, MMC_DATARATE_1000_HZ | MMC_EN_PRD_SET | MMC_SET_100);
+    vTaskDelay(10);
+    writeRegister(MMC_INTERNAL_CONTROL_1, MMC_BANDWIDTH_800_HZ);
+    vTaskDelay(10);
+    writeRegister(MMC_INTERNAL_CONTROL_2, 0b10101111);
+    // writeRegister(MMC_INTERNAL_CONTROL_2, MMC_CONTINUOUS_MODE | MMC_DATARATE_1000_HZ | MMC_EN_PRD_SET | MMC_SET_100);
+    // vTaskDelay(1);
+    // writeRegister(MMC_INTERNAL_CONTROL_0, MMC_AUTO_SR | MMC_INT_EN);
+    // vTaskDelay(8);
+    // send_time = esp_timer_get_time();
 
-    // writeRegister(MMC_INTERNAL_CONTROL_0, 0b00100000); // Auto set/reset
-    vTaskDelay(1);
-
-    writeRegister(MMC_INTERNAL_CONTROL_2, MMC_DATARATE_1000_HZ);
-    vTaskDelay(1);
-    writeRegister(MMC_INTERNAL_CONTROL_2, MMC_DATARATE_1000_HZ | 0b10100000);
-    vTaskDelay(1);
-    writeRegister(MMC_INTERNAL_CONTROL_2, MMC_CONTINUOUS_MODE | MMC_DATARATE_1000_HZ | 0b10100000);
-    vTaskDelay(1);
-
-    ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
+    // ESP_LOGI("mag", "status: %02x", readRegister(MMC_STATUS));
     // for (int i = 0; i <= 0xC; i++) {
     //     ESP_LOGI("mag", "%d: %02x", i, readRegister(i));
     // }
+    // receive_flag = 1;
 
     return true;
 }

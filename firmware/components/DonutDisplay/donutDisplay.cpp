@@ -1,8 +1,10 @@
 #include "donutDisplay.h"
 #include "HD107S.h"
+#include "esp_err.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "fontStore.h"
+#include "kalmanFilter.h"
 #include "orientator.h"
 #include <cstdint>
 #include <cstdio>
@@ -13,7 +15,10 @@ hd107s_color_t* DonutDisplay::frame_buffer[2];
 bool DonutDisplay::displayed_buffer;
 Orientator* DonutDisplay::orientator;
 esp_timer_handle_t DonutDisplay::displayTimer;
+esp_timer_handle_t DonutDisplay::renderTimer;
 uint8_t DonutDisplay::col_index = 0;
+bool DonutDisplay::PLL_enable = true;
+bool DonutDisplay::PLL_auto_enable = true;
 
 DonutDisplay::scene_t scene = {
 	.fps = 3,
@@ -75,7 +80,7 @@ DonutDisplay::~DonutDisplay() {
 }
 
 void IRAM_ATTR DonutDisplay::displayColumn(void* args) {
-	if (orientator->getVelocity() < SPINNING_THRESHOLD)
+	if (!PLL_enable || orientator->getVelocity() < SPINNING_THRESHOLD)
 		col_index = orientator->getHeading() * FRAME_WIDTH / ((1 << 16) - 1);
 	else {
 		if (col_index >= FRAME_WIDTH - 1)
@@ -173,9 +178,10 @@ void DonutDisplay::animate() {
 }
 
 void DonutDisplay::display(float angular_velocity, float angular_acceleration) {
-	uint64_t timer_timeout = 6283185.f / FRAME_WIDTH / SPINNING_THRESHOLD;
-	if (angular_velocity > SPINNING_THRESHOLD) {
+	uint64_t timer_timeout = 6283185.f / FRAME_WIDTH / angular_velocity;
+	if (angular_velocity > SPINNING_THRESHOLD && PLL_enable) {
 
+		float dt = (float)(esp_timer_get_time() - update_time)/1000000;
 		update_time = esp_timer_get_time();
 
 		// TODO: remove magic values
@@ -183,10 +189,17 @@ void DonutDisplay::display(float angular_velocity, float angular_acceleration) {
 		int16_t column_phase_offset = col_index - orientator->getHeading() * FRAME_WIDTH / ((1 << 16) - 1);
 		if (column_phase_offset > FRAME_WIDTH/2) column_phase_offset -= FRAME_WIDTH; 
 		if (column_phase_offset < -FRAME_WIDTH/2) column_phase_offset += FRAME_WIDTH; 
-		PLL_bias = - 0.1*column_phase_offset; // sorta a PI controller PLL_bias*0.1
+		if (PLL_auto_enable)
+			PLL_bias += - 0.000005*column_phase_offset*angular_velocity;
+		else
+			PLL_bias = 0; //- 0.1*column_phase_offset
 		
-		timer_timeout = 6283185.f / FRAME_WIDTH / (angular_velocity + PLL_bias + 0.75*(angular_velocity - previous_velocity)); // this should use state acceleration but that is not correct currently
+		timer_timeout = 6283185.f / FRAME_WIDTH / (angular_velocity + PLL_bias + 0.5*dt*(angular_velocity - previous_velocity)); 
 	}
+	if (PLL_enable && last_col_index > col_index) {
+		col_index = LSB2ROT * orientator->getHeading() * FRAME_WIDTH;
+	}
+	last_col_index = col_index;
 	if (esp_timer_restart(displayTimer, timer_timeout) == ESP_ERR_INVALID_STATE) {
 		esp_timer_start_periodic(displayTimer, timer_timeout);
 	}

@@ -53,6 +53,7 @@ typedef struct {
   float motor_percentage;
   float wheel_velocity; 
   float battery_voltage;
+  float dt;
   uint64_t time; // time of state
 } packet_system_state_t;
 
